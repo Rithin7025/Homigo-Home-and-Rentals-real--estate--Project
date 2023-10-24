@@ -16,10 +16,17 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    
     isBlocked :  {
         type : Boolean,
         default : false
     },
+
+    phone : {
+        type : Number,
+        required : true,
+        unique : true
+    }
     //to get the extra infos like when the user is created and when the updations is done we gonna use timestamps
     
 

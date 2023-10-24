@@ -1,5 +1,6 @@
 import express from 'express';
 const app = express();
+import userRouter from './routes/user.route.js'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { error } from 'console';
@@ -18,3 +19,6 @@ app.listen(PORT,()=>{
 app.get('/',(req,res)=>{
    res.json({hey : 'hello world'})
 })
+
+app.use('/api/user',userRouter)
+

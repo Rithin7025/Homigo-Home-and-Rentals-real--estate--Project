@@ -1,7 +1,4 @@
-import express from 'express';
-
-
-const test = async(req,res)=>{
+const test = (req,res)=>{
     res.json({
         messsage : 'api is working'
     })

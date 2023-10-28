@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type : Number,
         required : true,
         unique : true
+    },
+    isVerified : {
+        type : Boolean,
+        default : false
     }
     //to get the extra infos like when the user is created and when the updations is done we gonna use timestamps
     

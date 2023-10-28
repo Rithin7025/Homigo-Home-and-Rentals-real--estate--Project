@@ -1,18 +1,35 @@
 import express from 'express';
 const app = express();
-import mongoose from 'mongoose';
+import connectDB from './database/db.js';
 import dotenv from 'dotenv';
-import { error } from 'console';
+import cors from 'cors'
+
 dotenv.config();
+
+const allowedOrigins = [
+    "http://localhost:5173",
+     // Add your local IP here
+  ];
+  
+  app.use(
+    cors({
+      origin: allowedOrigins,
+      credentials: true,
+    })
+  );
+
 const PORT = process.env.PORT || 8000
 
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
-mongoose.connect(process.env.DATABASE_URL)
-.then(()=> console.log('Database connected'))
-.catch((error) => console.log(error))
 
-app.use(express.json())
+//database connection
+connectDB();
+//db
+
+
+app.use(express.json()); //for parsing application/json
+app.use(express.urlencoded({extended:true}));//for parsing application/x-www-form-urlencoded
 
 
 app.listen(PORT,()=>{

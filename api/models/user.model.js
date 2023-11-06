@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema({
     isVerified : {
         type : Boolean,
         default : false
+    },
+    otp : {
+        type : Number
+    },
+    otpExpiresAt : {
+        type : Date
     }
     //to get the extra infos like when the user is created and when the updations is done we gonna use timestamps
     

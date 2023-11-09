@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from 'react-toastify'
+import { useDispatch , useSelector} from "react-redux";
+import { signInStart,signInSuccess } from "../../redux/user/userSlice";
 
 
 
@@ -12,7 +14,7 @@ function SignIn() {
   const [formError, setFormError] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
   const   handleChange = (e) => {
     setFormData({
       ...formData,
@@ -32,17 +34,20 @@ function SignIn() {
      {/**return the reques if formData contains any errors */}
      if(Object.keys(formError).length > 0) return ;
      setIsSubmit(true);
+     
     setLoading(true)
      const res = await axios.post('/api/auth/login', formData);
      const data = res.data;
-    
+     dispatch(signInSuccess(data));
+
+     
  
-    setLoading(false)
+    setLoading(false);
      navigate('/')
      
  
    }catch(error){
-     setLoading(false)
+     
        if(error.response.status === 404){
           setError('incorrect username or password, please try again')
        }

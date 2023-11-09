@@ -10,7 +10,7 @@ dotenv.config();
 
 export const signup = async (req, res, next) => {
 
-    
+     console.log('entered sign up')
   const { userName, email, password, phone } = req.body;
   
   
@@ -24,7 +24,7 @@ export const signup = async (req, res, next) => {
   if(duplicateName){
     return res.status(500).json({message : 'User with the same name already exists',errorType : 'duplicateName'})
   }
-  
+    console.log('before hash')
     const hashedPassword = bcrypt.hashSync(password, 10);
     //creating a new user
     const newUser = new User({
@@ -36,14 +36,14 @@ export const signup = async (req, res, next) => {
     
 
     try {
-       
+      console.log('entered try ')
       await newUser.save();
       
       const UnverifiedUser = await User.findOne({email});
       const id = UnverifiedUser._id;
       sendverifyMail(userName,email,id);
       req.session.userId = UnverifiedUser._id;
-      
+      console.log('user created success fully')
      
       res.status(201).json({message : 'Account created , check your email to verify your account',status : true})    
      

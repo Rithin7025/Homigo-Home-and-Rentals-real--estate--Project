@@ -4,6 +4,7 @@ import axios from "axios";
 import {toast} from 'react-toastify'
 import { useDispatch , useSelector} from "react-redux";
 import { signInStart,signInSuccess } from "../../redux/user/userSlice";
+import OAuth from "../../components/User/OAuth";
 
 
 
@@ -148,6 +149,7 @@ function SignIn() {
         >
           {loading ? "Loading.." : "Sign In"}
         </button>
+        <OAuth/>
       </form>
 
       <div>

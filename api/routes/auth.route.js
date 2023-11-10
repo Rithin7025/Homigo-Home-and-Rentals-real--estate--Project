@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { signup,signin,validateOtpToVerifyUser,resendOtp } from '../controllers/auth.controller.js';
+import { signup,signin,validateOtpToVerifyUser,resendOtp,googleAuth } from '../controllers/auth.controller.js';
 
 
 
@@ -17,4 +17,6 @@ router.post('/otp' , validateOtpToVerifyUser);
 router.post('/resendOtp',resendOtp);
 
 
+//google auth
+router.post('/google', googleAuth);
 export default router

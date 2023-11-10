@@ -164,7 +164,7 @@ export const  signin = async (req, res, next) => {
   
     //removing the password from the userInfo
     const {password : pass,...userInfo} = validUser._doc;
-
+   
 
     res.cookie('access_token',token,{httpOnly : true}).status(200).json(userInfo)
   } catch (error) {
@@ -238,4 +238,51 @@ export const resendOtp = async(req,res) => {
   sendverifyMail(name,email,userId);
   console.log('the mail has been sent')
 
+}
+
+
+//==============================================google Auth ==========================================================
+
+export const googleAuth = async(req,res) => {
+ 
+ try {
+    const {email, name , photoURL} = req.body;
+    const user = await User.findOne({email});
+    //if the user exist , authenticate him/her 
+    if(user){
+      //if the user exists we create a token 
+      const token = jwt.sign({id : user._id},process.env.JWT_SECRET)
+       //seperate the password and send the rest
+    const  { password : pass, ...rest } = user._doc;
+    res.cookie('access_token', token , {httpOnly :true}).json(rest).status(200);
+
+    }else { //user doesn't exist , create one
+
+    //generate a password for the new User as its  a requrired feild in db
+
+    const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8) ;
+    const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+    const newUser = new User({
+
+      userName : name.split('').join('').toLowerCase() + Math.random().toString(36).slice(-4),
+      email,
+      password : hashedPassword,
+      avatar : photoURL
+    })
+    
+
+    const savedUser = await newUser.save();
+    console.log('saved user', savedUser)
+    
+    console.log('User saved')
+    const token = jwt.sign({id:savedUser._id},process.env.JWT_SECRET);
+    console.log('created coken')
+    const {password : pass , ...rest} = savedUser._doc;
+    res.cookie('access_token',token,{httpOnly : true}).status(201).json(rest)
+
+    }
+
+ } catch (error) {
+  console.log('entered error', error)
+ }
 }

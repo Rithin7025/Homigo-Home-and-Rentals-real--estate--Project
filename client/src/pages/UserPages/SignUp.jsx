@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
+import OAuth from "../../components/User/OAuth";
 
 
 
@@ -157,6 +158,8 @@ function SignUp() {
 
           {loading ? "Loading.." : "Sign Up"}
         </button>
+        {/**as its inside the form pressing it will submit the form as default,iorder to prevent to submission , change the button type in OAuth.jsx */}
+        <OAuth/>
       </form>
 
       <div className="flex gap-2 mt-5 ml-1">

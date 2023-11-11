@@ -5,13 +5,15 @@ import Profile from '../pages/UserPages/Profile'
 import PrivateRoute from '../components/User/PrivateRoute';
 
 const userRoutes = (
+
     <Route path='/' element={<BaseLayout/>}>
         <Route index element={<Home/>} />
+        
         {/**Protecting the private route */}
         <Route element={<PrivateRoute/>}>
 
         <Route path='profile' element={<Profile/>} />
-        
+
         </Route>
     </Route>
 

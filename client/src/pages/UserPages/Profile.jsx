@@ -5,7 +5,7 @@ import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/st
 import { app } from '../../firebase/firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
-
+import axios from '../../config/axiosConfig.js'
 //firebase storage 
 
 
@@ -24,6 +24,7 @@ function Profile() {
   const [formData, setFormData] = useState({})
   const [isHovered , setIsHovered] = useState(false)
   
+  console.log(currentUser)
   //useEffect which will run if the file is uploaded 
   useEffect(()=>{
     if(file){
@@ -31,6 +32,18 @@ function Profile() {
     }
   },[file]) //this will run when ever a file is changed/uploaded 
   
+
+  //=====================================================================
+    const handleSubmit = () => {
+      axios.post('/api/user/updateUser/', formData)
+      .then((response)=> console.log('succss'))
+      .catch((err)=> console.log(err)) 
+    }
+  
+  //=====================================================================
+
+
+
   const handleFileChange = (file) => {
 
     //firebase will remember which storage we wanna store by passing the app
@@ -71,14 +84,18 @@ function Profile() {
     <div className='p-3 max-w-lg mx-auto '>
       
      
-    
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
+      {/* <h1 className='text-3xl font-semibold text-center my-4'>Profile</h1> */}
       
 
 
-      <form className='flex flex-col gap-4'>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <input type="file" hidden accept='image/*' onChange={(e)=>setFile(e.target.files[0]) }  ref={fileref}/>
-       
+        <p className='text-sm self-center mt-3'>
+          {
+            fileUploadError ? (<span className='text-red-700'>Error uploading Image (image should be less than 2 mb)</span>) 
+            : fileUploadPercentage > 0 && fileUploadPercentage < 100 ? (<span className='text-slate-700'>{`Uploading image ${fileUploadPercentage} %`}</span>) : fileUploadPercentage === 100 ? (<span className='text-green-600'>Image Uploaded successFully !!</span>) : ''
+          }
+        </p> 
         <div className='self-center' style={{ position: 'relative', display: 'inline-block' }}  >
       <img
         onMouseEnter={() => setIsHovered(true)}
@@ -121,16 +138,14 @@ function Profile() {
         </div>
       )}
     </div>     
-        <p className='text-sm self-center'>
-          {
-            fileUploadError ? (<span className='text-red-700'>Error uploading Image (image should be less than 2 mb)</span>) 
-            : fileUploadPercentage > 0 && fileUploadPercentage < 100 ? (<span className='text-slate-700'>{`Uploading image ${fileUploadPercentage} %`}</span>) : fileUploadPercentage === 100 ? (<span className='text-green-600'>Image Uploaded successFully !!</span>) : ''
-          }
-        </p>   
-        <input type="text" placeholder='username'  id='username' className='rounded-lg border p-3 outline-none'/>
+    <h3 className='font-semibold text-slate-700 text-center'>{currentUser.userName}</h3>
+
+         
+        <input type="text" placeholder='username'  id='userName' className='rounded-lg border p-3 outline-none'/>
         <input type="email" placeholder='email' id='email' className='rounded-lg border p-3 outline-none'/>
-        <button className='bg-gray-700 text-white uppercase p-3 font-semibold  rounded-lg'>Update</button>
-        <button className='bg-indigo-600 text-white uppercase p-3 font-semibold  rounded-lg'>Create listing</button>
+        <input type="password" placeholder='password' id='password' className='rounded-lg border p-3 outline-none'/>
+        <button type='submit' className='bg-gray-700 text-white uppercase p-3 font-semibold  rounded-lg' >Update</button>
+        <button type='button' className='bg-indigo-600 text-white uppercase p-3 font-semibold  rounded-lg'>Create listing</button>
       </form>
       <div className='py-5 flex justify-between'>
         <span className='text-red-700 font-medium '>Delete Account ?  </span>

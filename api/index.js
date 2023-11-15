@@ -4,6 +4,7 @@ import connectDB from './database/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors'
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -11,9 +12,9 @@ const allowedOrigins = [
     "http://localhost:5173",
      // Add your local IP here
   ];
-  console.log(process.env.SESSION_SECRET)
   app.use(
     session({
+      name : 'session_cookie',
       secret: process.env.SESSION_SECRET, // Replace with a secure random key
       resave: false,
       saveUninitialized: true,
@@ -28,22 +29,25 @@ const allowedOrigins = [
       origin: allowedOrigins,
       credentials: true,
     })
-  );
-
-const PORT = process.env.PORT || 8000
-
-import userRouter from './routes/user.route.js';
-import authRouter from './routes/auth.route.js';
-import adminRouter from './routes/admin.route.js'
-
-
-//database connection
-connectDB();
-//db
-
-
-app.use(express.json()); //for parsing application/json
-app.use(express.urlencoded({extended:true}));//for parsing application/x-www-form-urlencoded
+    );
+     
+    //database connection
+    connectDB();
+    //db
+     
+    app.use(express.json()); //for parsing application/json
+    app.use(express.urlencoded({extended:true}));//for parsing application/x-www-form-urlencoded
+    app.use(cookieParser())
+    
+    const PORT = process.env.PORT || 8000
+    
+    import userRouter from './routes/user.route.js';
+    import authRouter from './routes/auth.route.js';
+    import adminRouter from './routes/admin.route.js'
+    
+   
+    
+   
 
 
 app.listen(PORT,()=>{

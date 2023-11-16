@@ -11,7 +11,7 @@ export const test = (req,res)=>{
 export const updateUserInfo = async(req,res) => {
     console.log(req.body)
     console.log(req.cookies,'the cookie')
-    
+
     if(req.user.id !== req.params.id) return res.status(401).json({message : 'not authorised'})
    try {
     if(req.body.password){
@@ -32,9 +32,20 @@ export const updateUserInfo = async(req,res) => {
    res.status(200).json(rest)
 
    } catch (error) {
-    
+    console.log(error)
    }
 
 }
 
 
+export const deleteUser = async(req,res) => {
+    //req.user  from the jwt middleware
+    if(req.user.id !== req.params.id) return res.status(401).json({message : 'not authorised'})
+    try {
+        await User.findByIdAndDelete(req.params.id)
+        //delete the user and clear the cookie
+        return res.status(200).json({message : 'User has been deleted'}).clearCookie('access_token');
+    } catch (error) {
+        console.log(error)
+    }
+}

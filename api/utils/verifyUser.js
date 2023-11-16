@@ -4,9 +4,7 @@ dotenv.config();
 import extractCookie from '../config/cookieExtractor.js'
 
 export const verifyToken = (req,res,next) => {
-    console.log('in the middlware for verify user')
-    console.log('🍇',extractCookie(req))
-
+    
     const token = req.cookies.access_token;
     console.log(token)
     
@@ -20,7 +18,7 @@ export const verifyToken = (req,res,next) => {
             }
 
             req.user = user;
-            console.log('next called')
+            console.log('next called')  
             next();
         })
 

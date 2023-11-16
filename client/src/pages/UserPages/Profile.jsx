@@ -3,10 +3,8 @@ import {useSelector} from 'react-redux'
 import { useRef } from 'react'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { app } from '../../firebase/firebase';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import axios from '../../config/axiosConfig.js'
-import {updateUserFailure,updateUserStart,updateUserSuccess} from '../../redux/user/userSlice.js'
+import {updateUserFailure,updateUserStart,updateUserSuccess,deleteUserStart,deleteUserFailure, deleteUserSuccess} from '../../redux/user/userSlice.js'
 import {useDispatch} from 'react-redux'
 //firebase storage 
 
@@ -28,7 +26,7 @@ function Profile() {
   const [error,setError] = useState(null);
   const dispatch = useDispatch();
   const [messageForImageUpload, setMessageForImageUpload] = useState('Image uplaoded successfully! click update')
-  const [successMessage , setSuccessMessage ] = useState(false)
+  const [successMessage , setSuccessMessage ] = useState(false);
   
   //useEffect which will run if the file is uploaded 
   useEffect(()=>{
@@ -112,10 +110,24 @@ function Profile() {
   }
   //======================================================================================
 
-  return (
-    <div className='p-3 max-w-lg mx-auto '>
+  const handleClickForDeleteAccount = async() => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await axios.delete(`/api/user/deleteUser/${currentUser._id}`);
+      dispatch(deleteUserSuccess());
       
-  
+    } catch (error) {
+      dispatch(deleteUserFailure())
+      if(error.response.status === 401){
+        setError('Not Authorised, try again')
+      }
+    }
+    
+  }  
+
+  return (
+    <div className='p-3 max-w-lg mx-auto'>
+     
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <input type="file" hidden accept='image/*' onChange={(e)=>setFile(e.target.files[0]) }  ref={fileref}/>
         <p className='text-sm self-center mt-3'>
@@ -169,7 +181,7 @@ function Profile() {
     </div>     
     <h1 className='font-bold text-lg text-slate-700 text-center'>{currentUser.userName}</h1>
 
-         
+        
         <input type="text" placeholder='username' defaultValue={currentUser.userName}  id='userName' className='rounded-lg border p-3 outline-none' onChange={handleChange}/>
         <input type="email" placeholder='email' id='email' defaultValue={currentUser.email} className='rounded-lg border p-3 outline-none' onChange={handleChange}/>
         <input type="password" placeholder='password' id='password' className='rounded-lg border p-3 outline-none' onChange={handleChange}/>
@@ -177,11 +189,11 @@ function Profile() {
         {/* <button  className='bg-indigo-600 text-white uppercase p-3 font-semibold  rounded-lg'>Create listing</button> */}
       </form>
       <div className='py-3 flex justify-between'>
-        <span className='text-black-700 font-normal '>Delete Account ?</span>
-        <span className='text-black-700 font-normal'>Sign out</span>
+        <span className='text-black-700 font-medium cursor-pointer ml-1' onClick={handleClickForDeleteAccount} >Delete Account ?</span>
+        <span className='text-black-700  font-medium mr-1 cursor-pointer'>Sign out</span>
       </div>
-      <p  className='text-red-700 font-medium p-1 text-center'>{error ? error : ''}</p>
-      {successMessage && (<p className='text-green-700 font-medium text-center'>Profile updated successfully</p>)}
+      <p  className='text-red-700 font-normal p-1 text-center'>{error ? error : ''}</p>
+      {successMessage && (<p className='text-green-700 font-normal text-center'>Profile updated successfully</p>)}
     </div>  
   )
 }

@@ -246,6 +246,9 @@ export const resendOtp = async(req,res) => {
 export const googleAuth = async(req,res) => {
  
  try {
+  console.log('req body-------------------------------')
+  console.log(req.body)
+  console.log('req body-------------------------------')
     const {email, name , photoURL} = req.body;
     const user = await User.findOne({email});
     //if the user exist , authenticate him/her 
@@ -263,6 +266,8 @@ export const googleAuth = async(req,res) => {
 
     const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8) ;
     const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+
+    console.log(hashedPassword,'before saving ')
     const newUser = new User({
 
       userName : name.split('').join('').toLowerCase()+Math.random().toString(36).slice(-4),
@@ -270,10 +275,12 @@ export const googleAuth = async(req,res) => {
       password : hashedPassword,
       avatar : photoURL
     })
-    
+    console.log('after saving')
 
     const savedUser = await newUser.save();
+    console.log('saved User','------------------------------------------')
     console.log('saved user', savedUser)
+    console.log('saved User','------------------------------------------')
     
     console.log('User saved')
     const token = jwt.sign({id:savedUser._id},process.env.JWT_SECRET);
@@ -286,4 +293,18 @@ export const googleAuth = async(req,res) => {
  } catch (error) {
   console.log('entered error', error)
  }
+}
+
+
+export const signOut = (req,res) => {
+  try {
+    console.log('entered sign out')
+    console.log(req.cookies)
+    res.clearCookie('access_token');
+    res.status(200).json({message : "User has been logged out"})
+  } catch (error) {
+
+    console.log(error)
+
+  }
 }

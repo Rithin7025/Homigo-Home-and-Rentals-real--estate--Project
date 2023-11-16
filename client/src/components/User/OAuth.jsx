@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 function OAuth() {
-
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClick = async() => {
@@ -25,11 +25,15 @@ function OAuth() {
        const email = result.user.email;
        const photoURL = result.user.photoURL;
        
+       
 
        const res = await axios.post('/api/auth/google' , {name , email , photoURL});
-       
+       console.log('res & res.data-------------------------------------------------------------')
        console.log(res)
+       console.log('res & res.data-------------------------------------------------------------')
        console.log(res.data)
+       console.log('res & res.data-------------------------------------------------------------')
+        
        dispatch(signInSuccess(res.data));
       navigate('/');
 

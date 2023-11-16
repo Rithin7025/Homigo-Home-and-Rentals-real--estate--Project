@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { app } from '../../firebase/firebase';
 import axios from '../../config/axiosConfig.js'
-import {updateUserFailure,updateUserStart,updateUserSuccess,deleteUserStart,deleteUserFailure, deleteUserSuccess} from '../../redux/user/userSlice.js'
+import {updateUserFailure,updateUserStart,updateUserSuccess,deleteUserStart,deleteUserFailure, deleteUserSuccess,userSignOutStart,userSignOutSuccess,userSignOutFailure} from '../../redux/user/userSlice.js'
 import {useDispatch} from 'react-redux'
 //firebase storage 
 
@@ -72,7 +72,6 @@ function Profile() {
   }
 
 
-  //========================== handle change ===========================================
     const handleChange =  (e) => {
       setFormData({
         ...formData,
@@ -80,10 +79,8 @@ function Profile() {
       })
    }
   
-  //======================================================================================
   
   
-  //=================================handle submit =======================================
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -124,6 +121,20 @@ function Profile() {
     }
     
   }  
+
+  const handleSignout = async() => {
+    try {
+      dispatch(userSignOutStart());
+      const res = await axios.get('/api/auth/logout');
+      dispatch(userSignOutSuccess());
+
+    } catch (error) {
+      if(error){
+        dispatch(userSignOutFailure())
+        setError('Error logging out , please refresh the page')
+      }
+    }
+  }
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -190,7 +201,7 @@ function Profile() {
       </form>
       <div className='py-3 flex justify-between'>
         <span className='text-black-700 font-medium cursor-pointer ml-1' onClick={handleClickForDeleteAccount} >Delete Account ?</span>
-        <span className='text-black-700  font-medium mr-1 cursor-pointer'>Sign out</span>
+        <span className='text-black-700  font-medium mr-1 cursor-pointer' onClick={handleSignout}>Sign out</span>
       </div>
       <p  className='text-red-700 font-normal p-1 text-center'>{error ? error : ''}</p>
       {successMessage && (<p className='text-green-700 font-normal text-center'>Profile updated successfully</p>)}

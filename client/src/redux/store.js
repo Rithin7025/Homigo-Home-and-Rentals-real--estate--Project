@@ -10,7 +10,7 @@ const persistConfig = {
     storage,
   }
   
-  const persistedReducer = persistReducer(persistConfig, userReducer)
+  const persistedReducer = persistReducer(persistConfig, userReducer);
 
 
 
@@ -20,7 +20,7 @@ export const store = configureStore({
     },
     middleware : (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck : false
-    })
+    }) 
     
 }) 
 

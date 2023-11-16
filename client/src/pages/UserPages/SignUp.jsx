@@ -16,11 +16,6 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(currentUser){
-      navigate('/')
-    }
-  },[currentUser,navigate])
 
   const handleChange = (e) => {
     console.log(formData);

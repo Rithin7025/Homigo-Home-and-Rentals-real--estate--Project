@@ -4,10 +4,15 @@ dotenv.config();
 import extractCookie from '../config/cookieExtractor.js'
 
 export const verifyToken = (req,res,next) => {
+    console.log('in the middlware for verify user')
     console.log('🍇',extractCookie(req))
+
     const token = req.cookies.access_token;
     console.log(token)
-    if(!token) return res.status(404).json({message : `token not found`})
+    
+    if(!token) return res.status(404).json({message : `token not found`});
+
+
    
         jwt.verify(token,process.env.JWT_SECRET, (err,user)=>{
             if(err){
@@ -15,6 +20,7 @@ export const verifyToken = (req,res,next) => {
             }
 
             req.user = user;
+            console.log('next called')
             next();
         })
 

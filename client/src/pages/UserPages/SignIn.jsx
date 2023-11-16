@@ -42,11 +42,11 @@ function SignIn() {
      if(Object.keys(formError).length > 0) return ;
      setIsSubmit(true);
      
-    setLoading(true)
+     setLoading(true)
      const res = await axios.post('/api/auth/login', formData);
      const data = res.data;
      dispatch(signInSuccess(data));
-
+     
      
  
     setLoading(false);
@@ -56,11 +56,13 @@ function SignIn() {
    }catch(error){
      
        if(error.response.status === 404){
-          setError('incorrect username or password, please try again')
+          setError('incorrect username or password, please try again');
+          setLoading(false)
        }
 
        if(error.response.status === 401){
-        setError('Incorrect password, please try again')
+        setError('Incorrect password, please try again');
+        setLoading(false)
      }
 
      if(error.response.status === 403){

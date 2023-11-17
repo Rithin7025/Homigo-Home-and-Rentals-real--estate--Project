@@ -200,8 +200,8 @@ function Profile() {
         {/* <button  className='bg-indigo-600 text-white uppercase p-3 font-semibold  rounded-lg'>Create listing</button> */}
       </form>
       <div className='py-3 flex justify-between'>
-        <span className='text-black-700 font-medium cursor-pointer ml-1' onClick={handleClickForDeleteAccount} >Delete Account ?</span>
-        <span className='text-black-700  font-medium mr-1 cursor-pointer' onClick={handleSignout}>Sign out</span>
+        <span className='text-red-700 font-medium cursor-pointer ml-1' onClick={handleClickForDeleteAccount} >Delete Account ?</span>
+        <span className='text-red-700  font-medium mr-1 cursor-pointer' onClick={handleSignout}>Sign out</span>
       </div>
       <p  className='text-red-700 font-normal p-1 text-center'>{error ? error : ''}</p>
       {successMessage && (<p className='text-green-700 font-normal text-center'>Profile updated successfully</p>)}

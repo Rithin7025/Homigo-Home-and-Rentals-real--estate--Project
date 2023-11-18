@@ -1,15 +1,35 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import axios from '../../config/axiosConfig.js'
+import {useDispatch,useSelector} from 'react-redux'
+import {deleteUserStart,deleteUserSuccess,deleteUserFailure} from '../../redux/user/userSlice.js'
 
-export default function Example() {
+
+export default function DeleteAccountConfirmation({isOpen, onClose}) {
   const [open, setOpen] = useState(true)
-
+  const {currentUser} = useSelector((state)=> state.user)
   const cancelButtonRef = useRef(null)
+  const dispatch = useDispatch()
+
+  const handleClickForDeleteAccount = async() => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await axios.delete(`/api/user/deleteUser/${currentUser._id}`);
+      dispatch(deleteUserSuccess());
+      
+    } catch (error) {
+      dispatch(deleteUserFailure())
+      if(error.response.status === 401){
+        setError('Not Authorised, try again')
+      }
+    }
+    
+  } 
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={()=>setOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -56,14 +76,14 @@ export default function Example() {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpen(false)}
+                    onClick={handleClickForDeleteAccount}
                   >
                     Deactivate
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpen(false)}
+                    onClick={onClose}
                     ref={cancelButtonRef}
                   >
                     Cancel

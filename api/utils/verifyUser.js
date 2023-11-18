@@ -6,7 +6,7 @@ import extractCookie from '../config/cookieExtractor.js'
 export const verifyToken = (req,res,next) => {
     
     const token = req.cookies.access_token;
-    console.log(token)
+    console.log(token,'from the verify token')
     
     if(!token) return res.status(404).json({message : `token not found`});
 

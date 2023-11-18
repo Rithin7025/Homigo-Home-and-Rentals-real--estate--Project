@@ -6,6 +6,8 @@ import { app } from '../../firebase/firebase';
 import axios from '../../config/axiosConfig.js'
 import {updateUserFailure,updateUserStart,updateUserSuccess,deleteUserStart,deleteUserFailure, deleteUserSuccess,userSignOutStart,userSignOutSuccess,userSignOutFailure} from '../../redux/user/userSlice.js'
 import {useDispatch} from 'react-redux'
+import DeleteAccountConfirmation from '../../assets/modals/DeleteAccountModal.jsx';
+import {Link} from 'react-router-dom'
 //firebase storage 
 
 
@@ -27,6 +29,7 @@ function Profile() {
   const dispatch = useDispatch();
   const [messageForImageUpload, setMessageForImageUpload] = useState('Image uplaoded successfully! click update')
   const [successMessage , setSuccessMessage ] = useState(false);
+  const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false)
   
   //useEffect which will run if the file is uploaded 
   useEffect(()=>{
@@ -107,20 +110,7 @@ function Profile() {
   }
   //======================================================================================
 
-  const handleClickForDeleteAccount = async() => {
-    try {
-      dispatch(deleteUserStart());
-      const res = await axios.delete(`/api/user/deleteUser/${currentUser._id}`);
-      dispatch(deleteUserSuccess());
-      
-    } catch (error) {
-      dispatch(deleteUserFailure())
-      if(error.response.status === 401){
-        setError('Not Authorised, try again')
-      }
-    }
-    
-  }  
+  
 
   const handleSignout = async() => {
     try {
@@ -136,9 +126,13 @@ function Profile() {
     }
   }
 
+  const handleModalForDelete = () => {
+    setIsDeleteModalOpen(true)
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
-     
+     <DeleteAccountConfirmation isOpen={isDeleteModalOpen} onClose={()=> setIsDeleteModalOpen(false)}/>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <input type="file" hidden accept='image/*' onChange={(e)=>setFile(e.target.files[0]) }  ref={fileref}/>
         <p className='text-sm self-center mt-3'>
@@ -148,7 +142,7 @@ function Profile() {
           }
         </p> 
         <div className='self-center' style={{ position: 'relative', display: 'inline-block' }}  >
-      <img
+      <img 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={`self-center rounded-full h-24 w-24 object-cover hover:cursor-pointer hover:scale-110 duration-700 ${isHovered ? 'opacity-40' : 'opacity-100'}`}
@@ -197,10 +191,12 @@ function Profile() {
         <input type="email" placeholder='email' id='email' defaultValue={currentUser.email} className='rounded-lg border p-3 outline-none' onChange={handleChange}/>
         <input type="password" placeholder='password' id='password' className='rounded-lg border p-3 outline-none' onChange={handleChange}/>
         <button  className='bg-gray-700 hover:opacity-95 text-white uppercase p-3 font-semibold  rounded-lg disabled:opacity-80 outline-none' >{loading ? 'loading. . .' : 'update'}</button>
-        {/* <button  className='bg-indigo-600 text-white uppercase p-3 font-semibold  rounded-lg'>Create listing</button> */}
+        <Link className='bg-emerald-900 text-white text-center p-3 font-semibold rounded-lg hover:opacity-90 uppercase' to={'/createListing'}>
+        Add property
+        </Link>
       </form>
       <div className='py-3 flex justify-between'>
-        <span className='text-red-700 font-medium cursor-pointer ml-1' onClick={handleClickForDeleteAccount} >Delete Account ?</span>
+        <span className='text-red-700 font-medium cursor-pointer ml-1'   onClick={handleModalForDelete} >Delete Account ?</span>
         <span className='text-red-700  font-medium mr-1 cursor-pointer' onClick={handleSignout}>Sign out</span>
       </div>
       <p  className='text-red-700 font-normal p-1 text-center'>{error ? error : ''}</p>

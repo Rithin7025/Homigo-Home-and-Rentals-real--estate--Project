@@ -25,8 +25,9 @@ function OAuth() {
        const email = result.user.email;
        const photoURL = result.user.photoURL;
        
+       console.log(name,email,photoURL)
        
-
+       console.log('before')
        const res = await axios.post('/api/auth/google' , {name , email , photoURL});
        console.log('res & res.data-------------------------------------------------------------')
        console.log(res)

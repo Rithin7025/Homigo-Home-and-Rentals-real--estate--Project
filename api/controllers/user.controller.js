@@ -46,6 +46,6 @@ export const deleteUser = async(req,res) => {
         //delete the user and clear the cookie
         return res.status(200).json({message : 'User has been deleted'}).clearCookie('access_token');
     } catch (error) {
-        console.log(error)
+        
     }
 }

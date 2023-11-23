@@ -4,7 +4,7 @@ import axios from '../../config/axiosConfig.js'
 import {toast} from 'react-toastify'
 import { useDispatch , useSelector} from "react-redux";
 import { signInStart,signInSuccess } from "../../redux/user/userSlice";
-import OAuth from "../../components/User/OAuth";
+import OAuth from "../../components/User/OAuth.jsx";
 
 
 function SignIn() {
@@ -148,7 +148,7 @@ function SignIn() {
           type="password"
           placeholder="  Password"
           id="password"
-          className="border rounded-lg p-3 focus:outline-none"
+          className="border rounded-lg p-3 focus:outline-none "
           onChange={handleChange}
         />
         {formError.password && (<p className="text-red-600">{formError.password}</p>)}

@@ -9,8 +9,7 @@ export const test = (req,res)=>{
 }
 
 export const updateUserInfo = async(req,res) => {
-    console.log(req.body)
-    console.log(req.cookies,'the cookie')
+    
 
     if(req.user.id !== req.params.id) return res.status(401).json({message : 'not authorised'})
    try {

@@ -9,8 +9,7 @@ const listingSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
-    },
-
+    }, 
     name: {
       type: String,
       required: true,
@@ -23,6 +22,19 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    city : {
+      type : String,
+      required : true
+    },
+    district : {
+      type : String,
+      required : true
+    },
+    country : {
+      type : String,
+      default : 'India'
+    },
+
     regularPrice: {
       type: Number,
       required: true,
@@ -47,10 +59,6 @@ const listingSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    typeOfProperty: {
-      type: Boolean,
-      required: true,
-    },
     offer: {
       type: Boolean,
       required: true,
@@ -59,8 +67,12 @@ const listingSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    documentUrls: {
+      type: Array,
+      required: true,
+    },
     type: {
-      type: Boolean,
+      type: String,
       required: true,
     },
     userRef: {

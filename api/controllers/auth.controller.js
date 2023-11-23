@@ -143,10 +143,11 @@ const sendverifyMail = async(name,email,userId) => {
 export const  signin = async (req, res, next) => {
 
   const { email, password } = req.body;   
+
   try {
     //checks email
     const validUser = await User.findOne({ email });
-    console.log(validUser, 'found User')
+    console.log(validUser, 'found User');
     if (!validUser) {
       return res.status(404).json({message : "User not found"});
     }
@@ -188,7 +189,7 @@ export const validateOtpToVerifyUser = async(req,res,next) => {
       console.log('inside the user not found')
       return res.status(404).json({message : 'User not found, try sign in',errorType : 'Invalid User'})
      }
-
+     
       //checking the current date and time 
       const now = new Date();
       

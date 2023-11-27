@@ -8,12 +8,14 @@ import CreateListing from '../pages/UserPages/CreateListing';
 import NotificationPage from '../pages/UserPages/NotificationPage';
 import ShowListingsPage from '../pages/UserPages/ShowListingsPage';
 import UpdateListingPage from '../pages/UserPages/UpdateListingPage';
+import ListingPage from '../pages/UserPages/ListingPage';
 
 const userRoutes = (
 
     <Route path='/' element={<BaseLayout/>}>
         <Route index element={<Home/>} />
         <Route path='about' element={<About/>} />
+        <Route path='listing/:listingId' element={<ListingPage/>} />
         
         {/**Protecting the private route */}
         <Route element={<PrivateRoute/>}>

@@ -12,6 +12,7 @@ import {
   import { useNavigate,useParams } from "react-router-dom";
   
   
+  
   export default function UpdateListingPage() {
     const params = useParams();
     const listingId = params.listingId
@@ -184,15 +185,20 @@ import {
         setSpinnerLoad(true);
         setFormError(false);
         console.log('entred')
-        const res = await axios.post(`/api/listing/updateUserListing/${listingId}`, formData);
-   
+        console.log(listingId)
+        const res = await axios.post(`/api/listing/updateUserListing/${listingId}`, formData).then((res)=>{
+            console.log('insde the then',res)
+            setSpinnerLoad(false);
+            navigate(`/listing/${listingId}`)
+        }).catch((error)=>{
+            setFormError(error.message)
+            setSpinnerLoad(false)
+        })
+        console.log('after')
     
-        console.log(res,'here teh response')
-        console.log(res._id,'heere is the id of the listing ')
         
-        setSpinnerLoad(false);
-        navigate('/notification')
       } catch (error) {
+        console.log(error)
         setFormError(error.message);
         setSpinnerLoad(false);
       }

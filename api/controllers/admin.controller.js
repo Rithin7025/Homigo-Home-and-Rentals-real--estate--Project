@@ -44,8 +44,8 @@ console.log('users here')
 
 
 export const getUnverifiedListings = async(req,res)=>{
-    try {
-        console.log('entered')
+    try { 
+        console.log('entered in admin getunverify')
         const getUnverifiedListings = await Listing.find({isVerified : false}).sort({createdAt : -1})
 
     res.status(200).json(getUnverifiedListings)

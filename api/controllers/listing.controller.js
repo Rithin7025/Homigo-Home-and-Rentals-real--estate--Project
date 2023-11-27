@@ -123,13 +123,14 @@ export const deleteUserListing = async(req,res) => {
 }
 
 export const updateUserListing = async(req,res)=> {
-  console.log('entered')
+  console.log('entered in updateUserListig')
   console.log(req.params.id);
   console.log(req.body)
 
  try {
   const listing = await Listing.findByIdAndUpdate(req.params.id,{$set : req.body},{new:true});
   console.log(listing,'listing got')
+  res.status(200).json(listing) 
   if(!listing){
     return res.status(404).json({message : 'listing not found'})
   }
@@ -144,7 +145,7 @@ export const updateUserListing = async(req,res)=> {
 
 export const getListing = async(req,res) => {
   try {
-    console.log('entered')
+    console.log('entered in the getListing')
     const listing = await Listing.findById(req.params.id)
     console.log(listing)
     if(!listing){

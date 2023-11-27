@@ -9,6 +9,7 @@ import NotificationPage from '../pages/UserPages/NotificationPage';
 import ShowListingsPage from '../pages/UserPages/ShowListingsPage';
 import UpdateListingPage from '../pages/UserPages/UpdateListingPage';
 import ListingPage from '../pages/UserPages/ListingPage';
+import Search from '../pages/UserPages/Search';
 
 const userRoutes = (
 
@@ -16,6 +17,7 @@ const userRoutes = (
         <Route index element={<Home/>} />
         <Route path='about' element={<About/>} />
         <Route path='listing/:listingId' element={<ListingPage/>} />
+        <Route path='search' element={<Search/>} />
         
         {/**Protecting the private route */}
         <Route element={<PrivateRoute/>}>

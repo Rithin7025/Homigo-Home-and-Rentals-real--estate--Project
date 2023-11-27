@@ -4,6 +4,8 @@ import bcryt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import dontenv from 'dotenv';
 import User from '../models/user.model.js'
+import {Listing} from '../models/listing.model.js'
+import mongoose from 'mongoose'
 dontenv.config()
 
 
@@ -38,4 +40,35 @@ export const listUsers = async(req,res) => {
   res.json(users)
 
 console.log('users here')
+}
+
+
+export const getUnverifiedListings = async(req,res)=>{
+    try {
+        console.log('entered')
+        const getUnverifiedListings = await Listing.find({isVerified : false}).sort({createdAt : -1})
+
+    res.status(200).json(getUnverifiedListings)
+    console.log(getUnverifiedListings)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const verifyListing = async(req,res) => {
+    const id  = req.params.id;
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid ID format' });
+          }
+          const objectId =new mongoose.Types.ObjectId(id)
+          console.log(objectId)
+
+          const updateListing  = await Listing.findByIdAndUpdate(objectId,{ isVerified : true});
+          console.log(updateListing);
+          res.status(201).json(updateListing)
+    } catch (error) {
+        console.log(error)
+    }
 }

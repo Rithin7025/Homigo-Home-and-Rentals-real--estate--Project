@@ -194,6 +194,10 @@ function Profile() {
         <Link className='bg-emerald-900 text-white text-center p-3 font-semibold rounded-lg hover:opacity-90 uppercase' to={'/createListing'}>
         Add property
         </Link>
+        <Link className='bg-red-900 text-white text-center p-3 font-semibold rounded-lg hover:opacity-90 uppercase' to={'/showListings'}>
+        Show listings
+        </Link>
+
       </form>
       <div className='py-3 flex justify-between'>
         <span className='text-red-700 font-medium cursor-pointer ml-1'   onClick={handleModalForDelete} >Delete Account ?</span>

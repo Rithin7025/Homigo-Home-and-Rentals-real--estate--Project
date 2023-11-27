@@ -10,6 +10,7 @@ import {
 import commonRoutes from "./commonRoutes.jsx";
 import noHeaderFile from "./noHeaderFile";
 import userRoutes from './userRoutes.jsx'
+import adminRoutes from "./adminRoutes.jsx";
  
  
   const router = createBrowserRouter(
@@ -18,6 +19,7 @@ import userRoutes from './userRoutes.jsx'
         {commonRoutes} 
         {noHeaderFile}  
         {userRoutes}
+        {adminRoutes}
       </Route>
     )
   );

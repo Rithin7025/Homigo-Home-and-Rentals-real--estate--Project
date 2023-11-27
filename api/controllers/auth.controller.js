@@ -274,8 +274,12 @@ export const googleAuth = async(req,res) => {
       userName : name.split('').join('').toLowerCase()+Math.random().toString(36).slice(-4),
       email,
       password : hashedPassword,
-      avatar : photoURL
+      avatar : photoURL,
+      isVerified : true,
+      phone : null
     })
+
+    console.log(newUser,'-------------------uuuuuser')
     console.log('after saving')
 
     const savedUser = await newUser.save();

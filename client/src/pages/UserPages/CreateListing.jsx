@@ -9,9 +9,11 @@ import { app } from "../../firebase/firebase.js";
 import Leaflet from "../../components/User/Leaflet.jsx";
 import axios from "axios";
 import {useSelector} from 'react-redux'
+import { useNavigate } from "react-router-dom";
 
 
 export default function CreateListing() {
+  const navigate = useNavigate();
   const [spinnerLoad, setSpinnerLoad] = useState(false);
   const [docsSubmited, setDocsSubmited] = useState("");
   const [formError, setFormError] = useState(false);
@@ -103,10 +105,10 @@ export default function CreateListing() {
   const handleDocsSubmit = (e) => {
     setDocsUploading(true);
     setDocsUploadErrors(false);
-    if (docs.length > 0 && docs.length + formData.docsUrls.length < 5) {
+    if (docs.length > 0 && docs.length + formData.docsUrls.length < 3) {
       const promises = [];
       for (let i = 0; i < docs.length; i++) {
-        promises.push(storeImage(docs[i]));
+        promises.push(storeImage(docs[i])); 
       }
 
       Promise.all(promises).then((urls) => {
@@ -123,7 +125,8 @@ export default function CreateListing() {
       setDocsUploadErrors("cannot upload empty documents");
     } else {
       setDocsUploading(false);
-      setDocsUploadErrors("Sorry ! you can only add 5 docs");
+      setDocsUploadErrors("Sorry ! you can only add 2 docs");
+      setDocsSubmited('')
     }
   };
 
@@ -191,8 +194,9 @@ export default function CreateListing() {
 
       console.log(res,'here teh response')
       console.log(res._id,'heere is the id of the listing ')
-
+      
       setSpinnerLoad(false);
+      navigate('/notification')
     } catch (error) {
       setFormError(error.message);
       setSpinnerLoad(false);
@@ -201,6 +205,7 @@ export default function CreateListing() {
   return (
     <main className={`relative  p-3 max-w-4xl mx-auto `}>
       <h1 className="font-semibold text-center my-7 text-3xl">Add Property</h1>
+      <hr className="p-3"/>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-6">
         {/**left div --------------------------------------------------------------*/}
         <div

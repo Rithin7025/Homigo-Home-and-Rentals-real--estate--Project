@@ -29,7 +29,7 @@ function AdminLogin() {
     if(Object.keys(formData).length !== 2)   return;
 
     const res = await axios.post('/api/admin/adminLogin',formData);
-    navigate('/admin/home')
+    navigate('/admin/dashboard  ')
      
     
     } catch (error) {

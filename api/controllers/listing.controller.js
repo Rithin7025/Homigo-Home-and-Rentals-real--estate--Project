@@ -141,3 +141,17 @@ export const updateUserListing = async(req,res)=> {
   console.log(error)
  }
 }
+
+export const getListing = async(req,res) => {
+  try {
+    console.log('entered')
+    const listing = await Listing.findById(req.params.id)
+    console.log(listing)
+    if(!listing){
+      return res.status(404).json({message : 'Not found'})
+    }
+    return res.status(200).json(listing)
+  } catch (error) {
+    console.log(error)
+  }
+}

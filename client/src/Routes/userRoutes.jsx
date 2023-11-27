@@ -7,6 +7,7 @@ import About from '../pages/UserPages/About';
 import CreateListing from '../pages/UserPages/CreateListing';
 import NotificationPage from '../pages/UserPages/NotificationPage';
 import ShowListingsPage from '../pages/UserPages/ShowListingsPage';
+import UpdateListingPage from '../pages/UserPages/UpdateListingPage';
 
 const userRoutes = (
 
@@ -21,6 +22,7 @@ const userRoutes = (
         <Route path ='createListing' element={<CreateListing/>}/>
         <Route path='notification' element={<NotificationPage/>}/> 
         <Route path='showListings' element={<ShowListingsPage/>}/> 
+        <Route path='updateListing/:listingId' element={<UpdateListingPage/>}/> 
         </Route>
     </Route>
 

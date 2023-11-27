@@ -1,7 +1,7 @@
 import  { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import { MdDelete } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 function ShowListingsPage() {
     const {currentUser} = useSelector((state) => state.user)
@@ -62,12 +62,14 @@ const [listingError,setListingError] = useState(false)
           <div className='p-5 w-full'>
             
               <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{listing.name}</h5>
+              <Link to={`/updateListing/${listing._id}`}>
             <button href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               edit
               <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
               </svg>
             </button>
+              </Link>
 
             <button onClick={()=>handleDelete(listing._id)} className=' ml-12 text-red-700 font-semibold'> Delete </button>
          

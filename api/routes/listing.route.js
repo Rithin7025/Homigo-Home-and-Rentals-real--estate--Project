@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router();
-import {createListing, getUserListings,getUserListing,deleteUserListing,updateUserListing,getListing} from '../controllers/listing.controller.js'
+import {createListing, getUserListings,getUserListing,deleteUserListing,updateUserListing,getListing,getListings} from '../controllers/listing.controller.js'
 import {verifyToken } from '../utils/verifyUser.js'
 
 
@@ -22,5 +22,7 @@ router.post('/updateUserListing/:id',verifyToken , updateUserListing)
 //get listing
 router.get('/getListing/:id',getListing)
 
+//search listing
+router.get('/getListings',getListings)
 
 export default router

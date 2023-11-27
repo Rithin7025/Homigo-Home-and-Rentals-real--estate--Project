@@ -156,3 +156,52 @@ export const getListing = async(req,res) => {
     console.log(error)
   }
 }
+
+export const getListings = async(req,res) => {
+  try {
+    //if there is a limit parse it other wise limit 9
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0 ;
+    let offer = req.query.offer;
+
+    //checking the offer from home and from the search page // from home the offer is 'undefined' so checking both condition
+    if(offer === undefined || offer === 'false'){
+      offer = { $in : [false , true]}
+    }
+
+    let furnished = req.query.furnished;
+    if(furnished === undefined || furnished === 'false'){
+      furnished = { $in : [false , true]}
+    }
+
+    let parking = req.query.parking;
+
+    if(parking === undefined || parking === 'false'){
+      parking = { $in : [false,true]}
+    }
+
+    let type = req.query.type;
+    if(type === undefined || type === 'all'){
+      type = { $in : ['sale','rent']} ;
+    }
+   //if there is a term to search search or empty
+    const searchTerm = req.query.searchTerm || '';
+    const sort = req.query.sort || 'createdAt' ; 
+    const order = req.query.order || 'desc'
+
+    const listings = await Listing.find({
+      //i means doesn't check if uppercase or lowercase
+     name : {$regex : searchTerm , $options : 'i'},
+     offer,
+     furnished,
+     parking,
+     type
+    }).sort({
+      [order] : order
+    }).limit(limit).skip(startIndex)
+    
+    return res.status(200).json(listings)
+  } catch (error) {
+      console.log(error)
+  }
+}

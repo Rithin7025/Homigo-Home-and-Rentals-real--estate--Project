@@ -9,6 +9,7 @@ const [listingDetails,setListingDetails] = useState([]);
 const [tokenError,setTokenError] = useState(false)
 const [listingError,setListingError] = useState(false)
     
+
  useEffect(()=>{
    const fetchListing = async() => {
     try {
@@ -70,7 +71,7 @@ const [listingError,setListingError] = useState(false)
               </svg>
             </button>
               </Link>
-
+              
             <button onClick={()=>handleDelete(listing._id)} className=' ml-12 text-red-700 font-semibold'> Delete </button>
          
  

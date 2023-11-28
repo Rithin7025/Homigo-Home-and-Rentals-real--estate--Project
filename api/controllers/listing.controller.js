@@ -159,10 +159,14 @@ export const getListing = async(req,res) => {
 
 export const getListings = async(req,res) => {
   try {
+
+    console.log(req.query,'here are the queries')
     //if there is a limit parse it other wise limit 9
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0 ;
     let offer = req.query.offer;
+
+    
 
     //checking the offer from home and from the search page // from home the offer is 'undefined' so checking both condition
     if(offer === undefined || offer === 'false'){
@@ -170,17 +174,18 @@ export const getListings = async(req,res) => {
     }
 
     let furnished = req.query.furnished;
+    console.log(furnished)
     if(furnished === undefined || furnished === 'false'){
       furnished = { $in : [false , true]}
     }
 
     let parking = req.query.parking;
-
+    console.log(parking)
     if(parking === undefined || parking === 'false'){
       parking = { $in : [false,true]}
     }
-
     let type = req.query.type;
+    console.log(type)
     if(type === undefined || type === 'all'){
       type = { $in : ['sale','rent']} ;
     }
@@ -188,7 +193,8 @@ export const getListings = async(req,res) => {
     const searchTerm = req.query.searchTerm || '';
     const sort = req.query.sort || 'createdAt' ; 
     const order = req.query.order || 'desc'
-
+    console.log(searchTerm,sort,order,'the serach term sort and order')
+    console.log('before listings')
     const listings = await Listing.find({
       //i means doesn't check if uppercase or lowercase
      name : {$regex : searchTerm , $options : 'i'},
@@ -199,9 +205,11 @@ export const getListings = async(req,res) => {
     }).sort({
       [order] : order
     }).limit(limit).skip(startIndex)
-    
+
+    console.log('after listings',listings)
     return res.status(200).json(listings)
   } catch (error) {
       console.log(error)
+      console.log('in the error')
   }
 }

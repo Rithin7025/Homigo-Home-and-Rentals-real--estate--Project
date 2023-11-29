@@ -20,7 +20,7 @@ const userRoutes = (
         <Route path='search' element={<Search/>} />
         
         {/**Protecting the private route */}
-        <Route element={<PrivateRoute/>}>
+        <Route element={<PrivateRoute/>}>   
 
         <Route path='profile' element={<Profile/>} />
         <Route path ='createListing' element={<CreateListing/>}/>

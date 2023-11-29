@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import axios from '../../config/axiosConfig.js'
 import {toast} from 'react-toastify'
@@ -54,7 +54,7 @@ function SignIn() {
      
  
    }catch(error){
-     
+      console.log(error)
        if(error.response.status === 404){
           setError('incorrect username or password, please try again');
           setLoading(false)
@@ -65,7 +65,25 @@ function SignIn() {
         setLoading(false)
      }
 
-     if(error.response.status === 403){
+     if(error.response.status === 403 && error.response.data.errorType === 'User blocked'){
+      setLoading(false)
+      setError(null)
+      console.log('entered into the lbolck')
+      toast.error('Your account has been blocked by the admin !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+     }
+
+     if(error.response.status === 403 && error.response.data.errorType === 'unauthenticated'){
+      setLoading(false)
+      setError(null)
 
       toast.info('Account not verified,please verify', {
         position: "top-center",

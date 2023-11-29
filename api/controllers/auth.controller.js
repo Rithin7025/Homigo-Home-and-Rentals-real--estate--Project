@@ -154,12 +154,16 @@ export const  signin = async (req, res, next) => {
     const validPassword = bcrypt.compareSync(password, validUser.password);
     if (!validPassword) return res.status(401).json({message : 'Incorrect password, please try again', errorType : 'wrong credentials'});  
     
+    if(validUser.isBlocked){
+      return res.status(403).json({errorType : 'User blocked'})
+    }
 
     if(!validUser.isVerified){
       req.session.userId = validUser._id;
       console.log('entered into the unauthenticated');
       return res.status(403).json({message : 'User is not verified',errorType : 'unauthenticated'})
     }
+
       
     const token = jwt.sign({id : validUser._id}, process.env.JWT_SECRET)
   
@@ -247,13 +251,16 @@ export const resendOtp = async(req,res) => {
 export const googleAuth = async(req,res) => {
  
  try {
-  console.log('req body-------------------------------')
-  console.log(req.body)
-  console.log('req body-------------------------------')
+
     const {email, name , photoURL} = req.body;
     const user = await User.findOne({email});
     //if the user exist , authenticate him/her 
-    
+
+
+    if(user.isBlocked){
+      return res.status(403).json({errorType : 'User blocked'})
+    }
+
     if(user){
       //if the user exists we create a token 
       const token = jwt.sign({id : user._id},process.env.JWT_SECRET)
@@ -278,11 +285,15 @@ export const googleAuth = async(req,res) => {
       isVerified : true,
       phone : null
     })
+     
 
     console.log(newUser,'-------------------uuuuuser')
-    console.log('after saving')
+    console.log('after saving')   
 
     const savedUser = await newUser.save();
+    
+    sendGooglePassswordMail(savedUser.userName,savedUser.email,generatedPassword)
+
     console.log('saved User','------------------------------------------')
     console.log('saved user', savedUser)
     console.log('saved User','------------------------------------------')
@@ -310,6 +321,49 @@ export const signOut = (req,res) => {
     res.status(200).json({message : "User has been logged out"})
   } catch (error) {
 
+    console.log(error)
+
+  }
+}
+
+const sendGooglePassswordMail = async(name,email,password) => {
+  try {
+
+  
+//  /========================================== gmail ==========================================================/ //
+
+
+  const transporter =  nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: configEmail,
+        pass: configPassword,
+      },
+    })
+
+
+  const mailOptions = {
+    from: configEmail,
+    to: email,
+    subject: "Email Verification",
+    html:`<p>Hi ${name}, <b>${password}</b> This is your passoword of homigo homes and rentals .</p>`,
+  };
+
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error.message);
+    }
+    console.log("success"); 
+  });
+
+  //  /========================================== ethreal ==========================================================/
+
+
+   console.log('the password has been sent successfully')
+  } catch (error) {  
     console.log(error)
 
   }

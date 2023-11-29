@@ -13,7 +13,7 @@ export const adminSignin = async(req,res,next) => {
     const {email, password} = req.body
     console.log(req.body)
     
-    let admin = await Admin.findOne({email});
+    const admin = await Admin.findOne({email});
     console.log(admin,'found')
 
     if(!admin){
@@ -26,9 +26,11 @@ export const adminSignin = async(req,res,next) => {
         console.log(`couldn't bcrypt`)
        return res.status(401).json({message : 'wrong credentials'})
     }
-
+    
     const token  = jwt.sign({id : admin._id},process.env.JWT_SECRET);
-    res.cookie('admin_token',token,{httpOnly: true}).status(200).json(admin)
+    const { password : pass, ...adminInfo } = admin._doc 
+
+    res.cookie('admin_token',token,{httpOnly: true}).status(200).json(adminInfo)
 
 
 }
@@ -39,7 +41,7 @@ export const listUsers = async(req,res) => {
   console.log(users)
   res.json(users)
 
-console.log('users here')
+console.log('users here from admin controller list users')
 }
 
 
@@ -71,4 +73,54 @@ export const verifyListing = async(req,res) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+export const unblockUser = async(req,res) => {
+    try {
+    const userId  = req.params.userId;
+   console.log('entered unblock user')
+   console.log(userId)
+   console.log('before')
+   
+   const user = await User.findByIdAndUpdate(userId,{ isBlocked : false})
+      if(!user){
+    res.status(404)
+   }
+    console.log('User',user)
+
+   if(!userId){
+    return res.status(404).json({message : 'No User'})
+   }
+   res.status(200).json(user)
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+export const blockUser = async(req,res) => {
+ try {
+    const userId  = req.params.userId;
+
+   console.log(userId)
+   console.log('before')
+   
+   const user = await User.findByIdAndUpdate(userId,{
+    isBlocked : true
+   })
+   console.log(user)
+      if(!user){
+    res.status(404)
+   }
+
+
+   if(!userId){
+    return res.status(404).json({message : 'No User'})
+   }
+   
+   res.status(200).json(user)
+ } catch (error) {
+    console.log(error)
+ }  
+
 }

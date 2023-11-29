@@ -2,7 +2,8 @@ import axios from "axios";
 import React,{useEffect, useState} from "react";
 import { useNavigate} from 'react-router-dom'
 import { toast } from "react-toastify";
-
+import { useDispatch } from "react-redux";
+import {adminSignInSuccess} from '../../redux/admin/adminSlice.js'
 
 function AdminLogin() {
 
@@ -10,6 +11,7 @@ function AdminLogin() {
   const [loading,setLoading] = useState(false);({})
   const [formErrors,setFormErrors] = useState({})
   const [errors,setError] = useState(null)
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   const handleChange = (e) =>{
@@ -29,7 +31,8 @@ function AdminLogin() {
     if(Object.keys(formData).length !== 2)   return;
 
     const res = await axios.post('/api/admin/adminLogin',formData);
-    navigate('/admin/dashboard  ')
+     dispatch(adminSignInSuccess(res.data))
+    navigate('/admin/dashboard')
      
     
     } catch (error) {

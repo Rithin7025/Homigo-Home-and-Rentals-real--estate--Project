@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useDispatch,useSelector } from 'react-redux'
 import { signInSuccess } from '../../redux/user/userSlice.js'
 import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
 
 
 function OAuth() {
@@ -31,16 +32,23 @@ function OAuth() {
        const res = await axios.post('/api/auth/google' , {name , email , photoURL});
        console.log('res & res.data-------------------------------------------------------------')
        console.log(res)
-       console.log('res & res.data-------------------------------------------------------------')
-       console.log(res.data)
-       console.log('res & res.data-------------------------------------------------------------')
         
        dispatch(signInSuccess(res.data));
       navigate('/');
 
         
     } catch (error) {
-      
+      console.log('entered error')
+      toast.error('Your account has been blocked by the admin !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   }
   return (

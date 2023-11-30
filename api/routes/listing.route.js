@@ -25,4 +25,6 @@ router.get('/getListing/:id',getListing)
 //search listing
 router.get('/getListings',getListings)
 
+
+
 export default router

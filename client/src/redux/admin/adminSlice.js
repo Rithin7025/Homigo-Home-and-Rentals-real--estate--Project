@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    admin : null
+    admin : localStorage.getItem('adminInfo') ? JSON.parse(localStorage.getItem('adminInfo')) : null
 }
 
 const adminSlice = createSlice({
@@ -11,6 +11,11 @@ const adminSlice = createSlice({
     reducers : {
         adminSignInSuccess : (state,action) => {
             state.admin = action.payload
+            localStorage.setItem('adminInfo',JSON.stringify(action.payload))
+        },
+        adminSignOutSucess : (state,action) => {
+          state.admin = null;
+          localStorage.removeItem('adminInfo')
         }
     }
 })

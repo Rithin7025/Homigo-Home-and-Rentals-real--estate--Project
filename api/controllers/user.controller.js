@@ -48,3 +48,21 @@ export const deleteUser = async(req,res) => {
         
     }
 }
+
+
+export const getLandLord  = async(req,res) => {
+    try {
+      console.log(req.params.id)
+      const user = await User.findById(req.params.id)
+      console.log(user)
+      if (!user){
+        res.status(404).json({message : 'user not found'})
+      }
+    
+      const {password : pass, ...rest} = user._doc
+      res.status(200).json(rest)
+    } catch (error) { 
+      console.log(error)
+    // return  res.status(error.response.status).json(error.status)
+    }
+  }

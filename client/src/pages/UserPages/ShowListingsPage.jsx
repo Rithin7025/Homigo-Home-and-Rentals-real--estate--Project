@@ -2,10 +2,12 @@ import  { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import ListingItem from '../../components/User/ListingItem';
+import ListingsOfUser from '../../components/ListingsOfUser';
 
 function ShowListingsPage() {
     const {currentUser} = useSelector((state) => state.user)
-const [listingDetails,setListingDetails] = useState([]);
+const [listingDetails,setListingDetails] = useState([]);``
 const [tokenError,setTokenError] = useState(false)
 const [listingError,setListingError] = useState(false)
     
@@ -15,6 +17,7 @@ const [listingError,setListingError] = useState(false)
     try {
       const res = await axios.get(`/api/listing/listings/${currentUser._id}`)
       console.log(res.data)
+      setTokenError(false)
       setListingDetails(res.data)
     } catch (error) {
       console.log(error)
@@ -43,43 +46,52 @@ const [listingError,setListingError] = useState(false)
  }
   return (
 
-    <div className=' md:w-full flex-wrap h-screen'>
-{        listingError &&        <p className='text-center p-3  text-red-700'>{listingError}</p>
-}
+    <div className=' md:w-full p-5 flex gap-6 mt-10 flex-wrap '>
+{        listingError &&  <p className='text-center p-3  text-red-700'>{listingError}</p>}
     {
       listingDetails && listingDetails.length > 0 && 
       listingDetails.map((listing)=>( 
         
-        <div key={listing._id} className='w-full p-5 md:mt-11 md:ml-8 sm:w-1/2 sm:flex-wrap md:w-1/3 lg:w-1/4 xl:w-1/5'>
-        <div className='w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+//         <div key={listing._id} className='w-full p-5 md:mt-11 md:ml-8 sm:w-1/2 sm:flex-wrap md:w-1/3 lg:w-1/4 xl:w-1/5'>
+//         <div className='w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
           
-       <img
-        className="w-full h-48 object-cover rounded-t-lg" // Set a fixed height and use object-cover
-        src={listing.imageUrls[0]}
-        alt=""
-      />   
+//        <img
+//         className="w-full h-48 object-cover rounded-t-lg" // Set a fixed height and use object-cover
+//         src={listing.imageUrls[0]}
+//         alt=""
+//       />   
                  
-      <div className='flex flex-row'>
-          <div className='p-5 w-full'>
+//       <div className='flex flex-row'>
+//           <div className='p-5 w-full'>
               
-              <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{listing.name}</h5>
-              <Link to={`/updateListing/${listing._id}`}>
-            <button href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              edit
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-              </svg>
-            </button>
-              </Link>
+//               <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{listing.name}</h5>
+//               <Link to={`/updateListing/${listing._id}`}>
+//             <button href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+//               edit
+//               <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+//                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+//               </svg>
+//             </button>
+//               </Link>
               
-            <button onClick={()=>handleDelete(listing._id)} className=' ml-12 text-red-700 font-semibold'> Delete </button>
+//             <button onClick={()=>handleDelete(listing._id)} className=' ml-12 text-red-700 font-semibold'> Delete </button>
          
  
- </div> 
+//  </div> 
  
-          </div>
-        </div>
-      </div> 
+//           </div>
+//         </div>
+//       </div> 
+<Link to={`/listing/${listing._id}`}>
+
+      <ListingsOfUser key={listing._id} onDelete={handleDelete}  listing={listing} />
+      </Link>
+
+      
+
+
+
+
       ))
     }
 

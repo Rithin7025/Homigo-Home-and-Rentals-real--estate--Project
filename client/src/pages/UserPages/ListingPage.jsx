@@ -5,6 +5,8 @@ import {Swiper,SwiperSlide} from 'swiper/react'
 import SwiperCore from 'swiper'
 import {Navigation} from 'swiper/modules'
 import 'swiper/css/bundle';
+import {useSelector} from 'react-redux'
+import ContactLandLord from '../../components/User/ContactLandLord'
 import {
     FaBath,
     FaBed,
@@ -16,23 +18,27 @@ import {
   } from 'react-icons/fa';
  
 export default function ListingPage() {
+  const {currentUser}  = useSelector((state) => state.user);
+  const [contact,setContact] = useState(false)
     SwiperCore.use([Navigation])
     const params = useParams();
     const listingId = params.listingId;
     const [copied, setCopied] = useState(false);
-
+ 
     const [listing,setListing] = useState(null)
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState(false)
-    console.log(listingId,'id-----------------------from listing>')
     
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                setLoading(true)
-                const res = await axios.get(`/api/listing/getListing/${listingId}`);
+            
+            setLoading(true)
+            const res = await axios.get(`/api/listing/getListing/${listingId}`)
             console.log(res.data)
-            const data = res.data;
+  
+            
+            const data = res.data
             setListing(data)
             setLoading(false)   
             setError(false)
@@ -71,7 +77,7 @@ export default function ListingPage() {
                 setCopied(true);
                 setTimeout(() => {
                   setCopied(false);
-                }, 2000);
+                }, 2000)
               }}
             />
           </div>
@@ -128,6 +134,8 @@ export default function ListingPage() {
                 {listing.furnished  ? `Furnished` : `Not furnished`}
             </li>
           </ul>
+          {currentUser && listing.userRef !== currentUser._id && !contact && (          <button onClick={()=> setContact(true)} className='p-3 bg-slate-700 uppercase font-semibold  rounded-lg text-white hover:opacity-90'>contact landlord</button>)}
+          {contact && (<ContactLandLord listing={listing}/>)}
           </div>
         </div>
             

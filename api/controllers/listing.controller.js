@@ -1,5 +1,6 @@
 import { Listing } from "../models/listing.model.js";
 import mongoose from "mongoose";
+import User from '../models/user.model.js'
 
 export const createListing = async (req, res) => {
   try {
@@ -213,3 +214,4 @@ export const getListings = async(req,res) => {
       console.log('in the error')
   }
 }
+

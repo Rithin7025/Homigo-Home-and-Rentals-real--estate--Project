@@ -8,13 +8,7 @@ import {updateUserFailure,updateUserStart,updateUserSuccess,deleteUserStart,dele
 import {useDispatch} from 'react-redux'
 import DeleteAccountConfirmation from '../../assets/modals/DeleteAccountModal.jsx';
 import {Link} from 'react-router-dom'
-//firebase storage 
-
-
-// allow read;
-// // allow write : if
-// // request.resource.size < 2 * 1024 &&
-// // request.resource.contentType.matches('image/.*')
+//firebase storage
 
 
 function Profile() {

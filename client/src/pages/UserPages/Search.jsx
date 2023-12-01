@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import ListingItem from '../../components/User/ListingItem';
+import { set } from 'mongoose';
 
 export default function Search() {
     const navigate = useNavigate();
@@ -17,8 +18,9 @@ export default function Search() {
 
     const[loading,setLoading] = useState(false);
     const[listings,setListings] = useState([]);
+    const [showMore,setShowMore] = useState(false);
 
-    useEffect(()=>{
+    useEffect(()=>{ 
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromUrl = urlParams.get('searchTerm');
         const typeFromUrl = urlParams.get('type');
@@ -48,7 +50,12 @@ export default function Search() {
              const res = await axios.get('/api/listing/getListings', {
       params: Object.fromEntries(urlParams.entries()),
     })
-    console.log(res,'here is teh res')
+         console.log(res.data.length)
+            if(res.data.length > 8){
+                setShowMore(true)
+            }else{
+                setShowMore(false)
+            }
             setListings(res.data)
             setLoading(false);
        }
@@ -94,6 +101,22 @@ console.log(listings)
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`)
 
+    }
+    const onShowmoreClick =async () => {
+            const numberOfListings = listings.length;
+            const startIndex = numberOfListings;
+            const urlParams = new URLSearchParams(location.search)
+            urlParams.set('startIndex',startIndex);
+            const res = await axios.get('/api/listing/getListings', {
+                params: Object.fromEntries(urlParams.entries()),
+              })
+             
+              
+              if(res.data.length < 9){
+                setShowMore(false)
+              }
+              setListings([...listings,...res.data]) 
+            console.log(numberOfListings)
     }
   return (
     <div className='flex flex-col md:flex-row'>
@@ -147,9 +170,9 @@ console.log(listings)
                     <button className='bg-slate-800 p-3 uppercase text-white font-semibold hover:opacity-90 rounded-lg'>Search</button>
             </form>
         </div>
-        <div className='flex-1'>
+    <div className='flex-1'>
                 <h1 className='text-3xl font-semibold  border-b p-3 text-slate-700 mt-5 '>listing results :</h1>
-                <div className='p-7 flex flex-wrap gap-4'>
+                <div className='p-7 flex flex-wrap gap-4 '>
                     {!loading && listings.length === 0 && (
                         <p className='text-xl text-slate-700'>No listings found</p>
                     )}
@@ -164,6 +187,17 @@ console.log(listings)
                         ))
                     }
                 </div>
+                {
+                    showMore && (
+                        <div className='w-full flex py-5 justify-center'>
+
+                <button onClick={onShowmoreClick} className='p-3    flex justify-center rounded-lg  border-2 shadow-xl hover:scale-105 transition-all duration-300 border-slate-400 items-center md:w-[420px] text-slate-500'>show more <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+</svg>
+</button>
+                </div>
+                    )
+                }
         </div>
 
     </div>

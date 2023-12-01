@@ -197,7 +197,7 @@ export const getListings = async(req,res) => {
     console.log(searchTerm,sort,order,'the serach term sort and order')
     console.log('before listings')
     const listings = await Listing.find({
-      //i means doesn't check if uppercase or lowercase
+      //'i' means doesn't check if uppercase or lowercase
      name : {$regex : searchTerm , $options : 'i'},
      offer,
      furnished,
@@ -205,7 +205,7 @@ export const getListings = async(req,res) => {
      type
     }).sort({
       [order] : order
-    }).limit(limit).skip(startIndex)
+    }).limit(limit).skip(startIndex); 
 
     console.log('after listings',listings)
     return res.status(200).json(listings)

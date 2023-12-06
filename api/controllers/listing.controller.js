@@ -181,9 +181,9 @@ export const getListings = async(req,res) => {
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0 ;
     let offer = req.query.offer;
-
     
-
+    
+    
     //checking the offer from home and from the search page // from home the offer is 'undefined' so checking both condition
     if(offer === undefined || offer === 'false'){
       offer = { $in : [false , true]}

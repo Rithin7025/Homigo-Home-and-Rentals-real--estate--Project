@@ -1,6 +1,20 @@
 import { Listing } from "../models/listing.model.js";
 import mongoose from "mongoose";
-import User from '../models/user.model.js'
+import dotenv from 'dotenv'
+dotenv.config();
+import Razorpay from 'razorpay'
+import shortid from "shortid";
+import crypto from 'crypto'
+import Token from '../models/token.model.js'
+
+
+
+
+
+const instance = new Razorpay({
+  key_id: process.env.RAZORPAY_ID,
+  key_secret: process.env.RAZORAY_SECRET,
+});
 
 export const createListing = async (req, res) => {
   try {
@@ -215,3 +229,100 @@ export const getListings = async(req,res) => {
   }
 }
 
+export const bookToken = async(req,res) => {
+  const {amount}  = req.body;
+  const roundedAmount = Math.floor(amount)
+   const payment_capture = 1;
+   const currency = "INR";
+
+   const options = {
+    amount: roundedAmount * 100,
+    currency,
+    receipt: shortid.generate(),
+    payment_capture,
+  };
+
+    try {
+      console.log('entered try')
+      console.log(options,'here are the options ')
+      const order = await instance.orders.create(options)
+      console.log(order , 'here the order has been received')
+      
+      if (!order) return res.status(500).send("Some error occured");
+
+
+      console.log('here options are created')
+      res.status(200).json(order);
+    } catch (error) {
+      res.status(500).send(error);
+      console.log(error)
+    }
+}
+
+export const paymentSuccessVerification = (req,res) => {
+  console.log('entered verification')
+  try {
+    // getting the details back from our font-end
+    const {
+        orderCreationId,
+        razorpayPaymentId,
+        razorpayOrderId,
+        razorpaySignature,
+        listing,
+        userId,
+        amount
+    } = req.body;
+    console.log('----------------------------------------req.body')
+    console.log(req.body)
+    console.log('----------------------------------------req.body')
+   
+    // Creating our own digest
+    // The format should be like this:
+    // digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
+    const shasum = crypto.createHmac("sha256", process.env.RAZORAY_SECRET); 
+    console.log(shasum,'shasum')
+   const data =   shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+    console.log(data)
+    const digest = data.digest("hex");
+    console.log(razorpaySignature)
+        console.log(digest,'digest')
+        
+        // comaparing our digest with the actual signature
+        if (digest !== razorpaySignature)  return res.status(400).json({ msg: "Transaction not legit!" });
+
+        // THE PAYMENT IS LEGIT & VERIFIED
+        //  SAVE THE DETAILS IN YOUR DATABASE IF YOU WANT
+        console.log('success')
+
+        const threeMonthsLater  = new Date();
+        threeMonthsLater.setMonth(threeMonthsLater.getMonth()+3)
+        const newToken = new Token({
+             propertyId : listing._id,
+             buyerUserId : userId,
+             sellerUserId : listing.userRef,
+             totalPrice : amount,
+             expiryDate : threeMonthsLater
+        })
+        //saving the new token
+
+        newToken.save();
+        res.json({
+            msg: "success",
+            orderId: razorpayOrderId,
+            paymentId: razorpayPaymentId,
+        });
+    } catch (error) {
+      console.log(error)
+        res.status(500).send(error)
+    }
+
+}
+
+export const getIsBookedDetails = async(req,res)=>{
+   const propertyId = req.params.id;
+   const tokenbooked = await Token.findOne({propertyId}) 
+   if(!tokenbooked) {
+    return res.status(404).json({message : 'booking not found'})
+   }
+   return res.status(200).json(tokenbooked)
+}

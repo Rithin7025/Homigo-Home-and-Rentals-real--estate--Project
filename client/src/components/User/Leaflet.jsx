@@ -3,12 +3,12 @@ import {Marker,Popup ,TileLayer} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import GeoCoderMarker from '../../GeoCoderMarker/geoCoderMarker'
 
-function Leaflet({address , city, country,district}) { 
+function Leaflet({address , city, country,district ,listPage}) { 
     console.log(address,city,country) 
     const position = [9.8422, 77.2046]    
 
   return (
-    <MapContainer className='h-40' center={[53.35,18.8]} zoom={13} scrollWheelZoom={false}>
+    <MapContainer className={`${listPage} ?  min-h-full : h-40 `} center={[53.35,18.8]} zoom={13} scrollWheelZoom={false}>
 
     <TileLayer 
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

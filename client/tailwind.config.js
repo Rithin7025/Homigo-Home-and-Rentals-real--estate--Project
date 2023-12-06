@@ -10,7 +10,6 @@ export default {
     extend: {},
   },
   plugins: [
-    require('@tailwindcss/line-clamp'),
     // ...
   ],
 }

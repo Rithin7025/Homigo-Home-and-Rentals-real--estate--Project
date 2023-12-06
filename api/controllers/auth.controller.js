@@ -320,9 +320,7 @@ export const signOut = (req,res) => {
     res.clearCookie('session_cookie');
     res.status(200).json({message : "User has been logged out"})
   } catch (error) {
-
     console.log(error)
-
   }
 }
 

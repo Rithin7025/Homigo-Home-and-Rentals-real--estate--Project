@@ -510,6 +510,7 @@ export default function CreateListing() {
               city={formData.city}
               district={formData.district}
               country={"India"}
+              listPage={false}
             />
           </div>
           <button

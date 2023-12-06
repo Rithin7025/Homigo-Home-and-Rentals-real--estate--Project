@@ -27,7 +27,7 @@ function Home() {
       setRentListings(res.data)
       fetchSaleListings()
      } catch (error) {
-      
+      console.log(error)
      }
     }
 
@@ -36,7 +36,7 @@ function Home() {
       const res= await axios.get('/api/listing/getlistings?type=sale&limit=4');
     setSaleListings(res.data)
     } catch (error) {
-      
+      console.log(error)
     }
   }
 

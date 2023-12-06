@@ -160,6 +160,7 @@ export const updateUserListing = async(req,res)=> {
 
 export const getListing = async(req,res) => {
   try {
+    console.log(req.params.id)
     console.log('entered in the getListing')
     const listing = await Listing.findById(req.params.id)
     console.log(listing)
@@ -259,7 +260,7 @@ export const bookToken = async(req,res) => {
     }
 }
 
-export const paymentSuccessVerification = (req,res) => {
+export const paymentSuccessVerification = async(req,res) => {
   console.log('entered verification')
   try {
     // getting the details back from our font-end
@@ -305,7 +306,8 @@ export const paymentSuccessVerification = (req,res) => {
         })
         //saving the new token
 
-        newToken.save();
+         await newToken.save();
+        const updateListing = await Listing.findByIdAndUpdate(listing._id,{isBooked : true})
         res.json({
             msg: "success",
             orderId: razorpayOrderId,

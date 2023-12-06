@@ -32,8 +32,9 @@ const [listingError,setListingError] = useState(false)
     console.log('entered handledelete')
     console.log(listingId)
    const res = await axios.delete(`/api/listing/deleteUserListing/${listingId}`);
-   console.log('res',res)
+   console.log('res',res) 
    setListingDetails((prev) => prev.filter((listing) => listing._id !== listingId))
+   
   } catch (error) {
     if(error.response.status === 404){
       setListingError('cannot find listing, try refresh or login again')

@@ -35,7 +35,7 @@ export default function ListingPage() {
     const [listing,setListing] = useState(null)
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState(false)
-    const [booked,setBooked] = useState(null)
+    // const [booked,setBooked] = useState(null)
     
     useEffect(()=>{
         const fetchData = async () => {
@@ -56,23 +56,23 @@ export default function ListingPage() {
         fetchData()
     },[listingId])
 
-    useEffect(()=>{
-       const fetchDataBooking = async() => {
-        try {
-          console.log('starated fetching token')
-          console.log(listingId)
-        const response = await axios.get(`/api/listing/getIsBookedDetails/${listingId}`);
+    // useEffect(()=>{
+    //    const fetchDataBooking = async() => {
+    //     try {
+    //       console.log('starated fetching token')
+    //       console.log(listingId)
+    //     const response = await axios.get(`/api/listing/getIsBookedDetails/${listingId}`);
 
         
-        setBooked(response.data)
-        } catch (error) {
-          console.log(error)
-          setBooked(null)
-        }
+    //     setBooked(response.data)
+    //     } catch (error) {
+    //       console.log(error)
+    //       setBooked(null)
+    //     }
 
-       }
-       fetchDataBooking()
-    },[])
+    //    }
+    //    fetchDataBooking()
+    // },[])
 
     const displayRazorpay = async()=> {
       console.log('display razorpay called')
@@ -204,7 +204,7 @@ export default function ListingPage() {
             </p>
           )}
 <div className='sm:flex-row md:flex justify-between'>
-
+      
           <div className='flex flex-col md:w-1/2 sm:w-full md:ml-8 p-3 mt-7 gap-4'>
             <p className='text-2xl font-semibold'>
             {listing.name} -₹{' '}
@@ -213,13 +213,12 @@ export default function ListingPage() {
                 : listing.regularPrice.toLocaleString('en-US')}
               {listing.type === 'rent' && ' / month'}
                 </p>
-           <Popover className='max-w-xs' content="You can book a token with 2% of actual price
-            and secure the property from other users ">
-                          <button disabled={currentUser._id === listing.userRef} onClick={displayRazorpay} type="button" className="disabled:opacity-80 text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 md:w-[200px] dark:focus:ring-blue-800">
+           <Popover className='max-w-xs' content="Book with 2% down payment!! Secure property for 3 months.">
+                          <button disabled={currentUser._id === listing.userRef || listing.isBooked} onClick={displayRazorpay} type="button" className="disabled:opacity-80 text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 md:w-[200px] dark:focus:ring-blue-800">
            <svg className="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
           <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z"/>
           </svg>
-                {currentUser._id  === listing.userRef  ? 'your listing' : 'Book a token'}
+                {currentUser._id  === listing.userRef  ? 'your listing' : listing.isBooked ? 'Booked' : 'Book a token'}
            </button>
             </Popover>  
               <p className='flex  items-center gap-2 text-slate-600 text-sm'>

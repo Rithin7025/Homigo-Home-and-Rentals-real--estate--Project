@@ -103,29 +103,36 @@ export default function CreateListing() {
   };
 
   const handleDocsSubmit = (e) => {
-    setDocsUploading(true);
     setDocsUploadErrors(false);
-    if (docs.length > 0 && docs.length + formData.docsUrls.length < 3) {
+    if (docs.length > 0 && docs.length + formData.docsUrls.length == 3) {
       const promises = [];
       for (let i = 0; i < docs.length; i++) {
         promises.push(storeImage(docs[i])); 
       }
-
+      
+      setDocsUploading(true);
       Promise.all(promises).then((urls) => {
         setFormData({
           ...formData,
           docsUrls: formData.docsUrls.concat(urls),
         });
+        setDocsSubmited("Document images uploaded successfully");
       });
-      setDocsSubmited("Document images uploaded successfully");
+      
       setDocsUploading(false);
       setImageUploadErrors(false);
     } else if (docs.length === 0) {
       setDocsUploading(false);
       setDocsUploadErrors("cannot upload empty documents");
-    } else {
+    } 
+     else if (docs.length < 3) {
       setDocsUploading(false);
-      setDocsUploadErrors("Sorry ! you can only add 2 docs");
+      setDocsUploadErrors("Please add 3 documents");
+    } 
+    
+    else {
+      setDocsUploading(false);
+      setDocsUploadErrors("Sorry ! you can only add  docs");
       setDocsSubmited('')
     }
   };
@@ -514,7 +521,7 @@ export default function CreateListing() {
             />
           </div>
           <button
-            disabled={spinnerLoad ||  uploading}
+            disabled={spinnerLoad ||  uploading || docsUploading }
             className="p-3 rounded-lg bg-slate-800 text-white font-semibold uppercase hover:opacity-90 hover:shadow-lg disabled:opacity-80"
           >
             {spinnerLoad ? "Property Listing" : "Add property"}

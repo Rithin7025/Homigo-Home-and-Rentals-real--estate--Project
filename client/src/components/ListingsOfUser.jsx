@@ -8,7 +8,8 @@ import PropertyDeleteConfirmation from './modals/PropertyDeleteConfirmation'
 export default function ListingsOfUser({listing,onDelete}) {
 
 
-    const handleDelete = async(listingId) => {
+    const handleDelete = async(listingId,e) => {
+      e.preventDefault()
         try {
           onDelete(listingId)
         } catch (error) {
@@ -52,7 +53,7 @@ export default function ListingsOfUser({listing,onDelete}) {
               </svg>
             </button>
                </Link>
-           <button onClick={()=>handleDelete(listing._id)} className='p-3 px-3 py-2 mb-3 mr-3  text-red-700 font-semibold'> Delete </button>
+           <button type='button' onClick={(e)=>handleDelete(listing._id,e)} className='p-3 px-3 py-2 mb-3 mr-3  text-red-700 font-semibold'> Delete </button>
 
         </div>
     </div>

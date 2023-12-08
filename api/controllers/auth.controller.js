@@ -165,7 +165,7 @@ export const  signin = async (req, res, next) => {
     }
 
       
-    const token = jwt.sign({id : validUser._id}, process.env.JWT_SECRET)
+    const token = jwt.sign({id : validUser._id,role : validUser.role}, process.env.JWT_SECRET)
   
     //removing the password from the userInfo
     const {password : pass, ...userInfo} = validUser._doc;
@@ -173,7 +173,7 @@ export const  signin = async (req, res, next) => {
 
     res.cookie('access_token',token,{httpOnly : true}).status(200).json(userInfo)
   } catch (error) {
-    next(errorHandler(404, "User Not Found"));
+    return res.status(404).json({message : 'user not found'})
   }
 };
 

@@ -6,7 +6,9 @@ import Razorpay from 'razorpay'
 import shortid from "shortid";
 import crypto from 'crypto'
 import Token from '../models/token.model.js'
-
+import {configEmail , configPassword} from '../config/config.js'
+import nodemailer from 'nodemailer'
+import User from "../models/user.model.js";
 
 
 
@@ -142,7 +144,7 @@ export const updateUserListing = async(req,res)=> {
   console.log(req.params.id);
   console.log(req.body)
 
- try {
+ try { 
   const listing = await Listing.findByIdAndUpdate(req.params.id,{$set : req.body},{new:true});
   console.log(listing,'listing got')
   res.status(200).json(listing) 
@@ -301,18 +303,29 @@ export const paymentSuccessVerification = async(req,res) => {
              propertyId : listing._id,
              buyerUserId : userId,
              sellerUserId : listing.userRef,
-             totalPrice : amount,
+             totalPrice : amount /100,
              expiryDate : threeMonthsLater
         })
         //saving the new token
 
          await newToken.save();
-        const updateListing = await Listing.findByIdAndUpdate(listing._id,{isBooked : true})
+        const updateListing = await Listing.findByIdAndUpdate(listing._id,{isBooked : true});
+        const seller = await User.findById(newToken.sellerUserId)
+        const sellerName = seller.userName;
+        const sellerEmail = seller.email;
+        
+        console.log(seller,'just got the seller')
+        const buyer = await User.findById(newToken.buyerUserId);
+        const buyerName = buyer.userName;
+        const buyerEmail = buyer.email;
+        console.log(buyer, 'just got the buyer')
         res.json({
             msg: "success",
             orderId: razorpayOrderId,
             paymentId: razorpayPaymentId,
         });
+
+
     } catch (error) {
       console.log(error)
         res.status(500).send(error)
@@ -327,4 +340,70 @@ export const getIsBookedDetails = async(req,res)=>{
     return res.status(404).json({message : 'booking not found'})
    }
    return res.status(200).json(tokenbooked)
+}
+
+export const getToken = async(req,res) => {
+   const userId = req.params.id;
+   if(!userId){
+    return res.status(404).json({message : 'userId not found'})
+   }
+
+   try {
+    const tokens = await Token.find({buyerUserId : userId}).populate('propertyId','name type')
+    console.log('----------------------------------------> token')
+    console.log(tokens)
+    console.log('---------------------------------------- > toknen')
+    if(!tokens || tokens.length === 0){
+
+      return res.status(204).json({message : 'empty tokens'})
+
+    }
+    return res.status(200).json(tokens)
+   } catch (error) {
+    console.log(error)
+   }
+}
+
+
+
+const sendTokenBookedMail = async(name,email,PropertyName,buyerName,buyerEmail) => {
+  try {
+
+//  /========================================== gmail ==========================================================/ //
+
+
+  const transporter =  nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: configEmail,
+        pass: configPassword,
+      },
+    })
+
+
+  const mailOptions = {
+    from: configEmail,
+    to: email,
+    subject: "Property Verification",
+    html:`<p>Congrats ${name},   This message is sent to you to announce that your property ${PropertyName} has a successful token registration by ${buyerName}, you can contact buyer @ ${buyerEmail}</p>`,
+  };
+
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error.message);
+    }
+    console.log("success"); 
+  });
+
+  //  /========================================== ethreal ==========================================================/
+
+
+   console.log('property has been verified')
+  } catch (error) {  
+    console.log(error)
+
+  }
 }

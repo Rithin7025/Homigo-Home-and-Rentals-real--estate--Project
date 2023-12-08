@@ -12,6 +12,7 @@ const allowedOrigins = [
     "http://localhost:5173",
      // Add your local IP here
   ];
+  
   app.use(
     session({
       name : 'session_cookie',

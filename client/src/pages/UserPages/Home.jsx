@@ -16,7 +16,7 @@ function Home() {
   useEffect(()=>{
     const fetchOfferListings =async () => {
       try {
-        const res = await axios.get('/api/listing/getlistings?offer=true&limit=4')
+        const res = await axios.get('/api/listing/getlistings?offer=true&limit=3')
         console.log(res)
         console.log(res.data.length)
         setOfferListings(res.data)
@@ -29,7 +29,7 @@ function Home() {
 
     const fetchRentListings = async() => {
      try {
-      const res = await axios.get('/api/listing/getlistings?type=rent&limit=4')
+      const res = await axios.get('/api/listing/getlistings?type=rent&limit=3')
       console.log(res.data)
       console.log(res.data.length)
       setRentListings(res.data)
@@ -41,7 +41,7 @@ function Home() {
 
     const fetchSaleListings = async()=> {
     try {
-      const res= await axios.get('/api/listing/getlistings?type=sale&limit=4');
+      const res= await axios.get('/api/listing/getlistings?type=sale&limit=3');
       console.log(res.data)
       console.log(res.data.length)
     setSaleListings(res.data)
@@ -105,7 +105,7 @@ function Home() {
                 {
                   offerListings.map((listing)=> (
                      <ListingItem  listing={listing} key={listing._id}/>
-                  ))
+                  ))  
                 }
               </div>
             </div>
@@ -117,7 +117,7 @@ function Home() {
               <div className="my-3">
                 <h2 className='text-2xl text-slate-700 font-semibold'>Recent places for sale</h2>
                 <Link className='text-sm text-blue-700 hover:underline' to={`/search?type=sale`}>
-                  show more offers
+                  show more 
                 </Link>
               </div>
               <div className="flex flex-wrap gap-6">
@@ -140,6 +140,7 @@ function Home() {
                 </Link>
               </div>
               <div className="flex flex-wrap gap-6">
+
                 {
                  rentListings.map((listing)=> (
                      <ListingItem  listing={listing} key={listing._id}/>

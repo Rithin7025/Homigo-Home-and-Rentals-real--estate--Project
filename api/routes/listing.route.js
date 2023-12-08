@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router();
-import {createListing, getUserListings,getUserListing,deleteUserListing,updateUserListing,getListing,getListings,bookToken,paymentSuccessVerification,getIsBookedDetails} from '../controllers/listing.controller.js'
+import {createListing, getUserListings,getUserListing,deleteUserListing,updateUserListing,getListing,getListings,bookToken,paymentSuccessVerification,getIsBookedDetails,getToken} from '../controllers/listing.controller.js'
 import {verifyToken } from '../utils/verifyUser.js'
 
 
@@ -34,6 +34,6 @@ router.post('/success',paymentSuccessVerification)
 //to check if the property is already booked
 router.get('/getIsBookedDetails/:id',getIsBookedDetails)
 
-
-
+//to fetch token 
+router.get('/getToken/:id',getToken);
 export default router

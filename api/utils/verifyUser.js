@@ -17,6 +17,13 @@ export const verifyToken = (req,res,next) => {
 
             req.user = user;
             console.log('next from verify token')
+            //extractin role    
+            const userRole = user.role;
+
+             // Attach the role to the request object for further use in route handlers
+             req.role = userRole;
+
+
             next();
         })
 

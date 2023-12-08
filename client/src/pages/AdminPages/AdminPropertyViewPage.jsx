@@ -45,7 +45,7 @@ export default function AdminPropertyViewPage() {
   <div className="container mx-auto px-4">
    
 
-    <div className=" lg:col-gap-10 xl:col-gap-12  grid grid-cols-1  lg:mt-6 lg:grid-cols-5 lg:gap-9">
+    <div className=" lg:col-gap-10 xl:col-gap-12  grid grid-cols-1  lg:grid-cols-5 md:gap-9">
       <div className="lg:col-span-3 lg:row-end-1">
         <div className="lg:flex lg:items-start">
           <div className="lg:order-2 lg:ml-3">
@@ -76,7 +76,23 @@ export default function AdminPropertyViewPage() {
           </div>
         </div>
       </div>
+      
+      <div className='h-[160px] w-full mb-6 flex gap-6 '>
+          {propertyDetails && propertyDetails.documentUrls && propertyDetails.documentUrls[0] && (
+          <img className="h-[140px] w-full object-cover mb-6" src={propertyDetails.documentUrls[0]} alt="no pic" />
 
+          )}
+          {propertyDetails && propertyDetails.documentUrls && propertyDetails.documentUrls[1] && (
+          <img className="h-[140px] w-full object-cover mb-6" src={propertyDetails.documentUrls[1]} alt="no pic" />
+
+          )}
+          {propertyDetails && propertyDetails.documentUrls && propertyDetails.documentUrls[2] && (
+          <img className="h-[140px] w-full object-cover mb-6" src={propertyDetails.documentUrls[2]} alt="no pic" />
+
+          )}
+
+      </div>
+ 
       <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
         <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">{propertyDetails.name}</h1>
           <h2 className='font-semibold text-slate-500 mt-3'>type of property : <span className='text-red-700'>{propertyDetails.type}</span> </h2>
@@ -84,7 +100,7 @@ export default function AdminPropertyViewPage() {
 
        
 
-        <div className=" flow-root sm:mt-12">
+        <div className=" flow-root sm:mt-12 bg-slate-200">
           <p className="mt-4">{propertyDetails.description}</p>
         </div>
 
@@ -98,12 +114,13 @@ export default function AdminPropertyViewPage() {
                 propertyDetails.type === 'rent' && <span className="text-base">/month</span>
             }
           </div>
-
+           
           <button type="button" onClick={handleSubmit} className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
            
             Verify Property
           </button>
         </div>
+
          
         <ul className="mt-8 space-y-2">
           <li className="flex items-center text-left text-sm font-medium text-gray-600">
@@ -120,9 +137,7 @@ export default function AdminPropertyViewPage() {
   </div>
 </section>
     
-       <div className='bg-red-700 w-full h-36 mt-2 p-2' >
-             <img src="" className='w-40 h-40' alt="noprofiel" />
-       </div>
+       
 </div>
   )
 }

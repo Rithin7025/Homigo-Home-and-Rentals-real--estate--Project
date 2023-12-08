@@ -59,6 +59,10 @@ function SignIn() {
           setError('incorrect username or password, please try again');
           setLoading(false)
        }
+       if(error.response.status === 404 && error.response.data.message === 'user not found'){
+          setError('User not found!!');
+          setLoading(false)
+       }
 
        if(error.response.status === 401){
         setError('Incorrect password, please try again');

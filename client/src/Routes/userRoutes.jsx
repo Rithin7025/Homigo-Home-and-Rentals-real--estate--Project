@@ -10,6 +10,7 @@ import ShowListingsPage from '../pages/UserPages/ShowListingsPage';
 import UpdateListingPage from '../pages/UserPages/UpdateListingPage';
 import ListingPage from '../pages/UserPages/ListingPage';
 import Search from '../pages/UserPages/Search';
+import Tokens from '../pages/UserPages/Tokens';
 
 const userRoutes = (
 
@@ -27,6 +28,7 @@ const userRoutes = (
         <Route path='notification' element={<NotificationPage/>}/> 
         <Route path='showListings' element={<ShowListingsPage/>}/> 
         <Route path='updateListing/:listingId' element={<UpdateListingPage/>}/> 
+        <Route path='token' element={<Tokens/>}/> 
         </Route>
     </Route>
 

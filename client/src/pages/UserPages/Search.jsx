@@ -21,6 +21,7 @@ export default function Search() {
     const [showMore,setShowMore] = useState(false);
 
     useEffect(()=>{ 
+
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromUrl = urlParams.get('searchTerm');
         const typeFromUrl = urlParams.get('type');
@@ -28,9 +29,10 @@ export default function Search() {
         const furnishedFromUrl = urlParams.get('furnished');
         const offerFromUrl = urlParams.get('offer');
         const sortFromUrl = urlParams.get('sort');
-        const orderFromUrl = urlParams.get('order')
+        const orderFromUrl = urlParams.get('order');
         
        if(searchTermFromUrl || typeFromUrl || parkingFromUrl || furnishedFromUrl || offerFromUrl || sortFromUrl ||  orderFromUrl){
+        
            setSidebarData({
                searchTerm : searchTermFromUrl || '',
                type : typeFromUrl || 'all',

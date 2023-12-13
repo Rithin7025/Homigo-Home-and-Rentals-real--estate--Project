@@ -19,6 +19,7 @@ const instance = new Razorpay({
 });
 
 export const createListing = async (req, res) => {
+
   try {
     console.log(
       "entered in create LIsting--------------------------------------------"
@@ -30,6 +31,7 @@ export const createListing = async (req, res) => {
       return res.status(404).json({ message: "No user found, please login" });
     }
     //discount price is different
+    
     const country = "India";
     const {
       address,
@@ -140,20 +142,23 @@ export const deleteUserListing = async(req,res) => {
 }
 
 export const updateUserListing = async(req,res)=> {
-  console.log('entered in updateUserListig')
+  console.log('entered in updateUserListig------------------------------------------------------------------//////')
+
   console.log(req.params.id);
   console.log(req.body)
 
  try { 
-  const listing = await Listing.findByIdAndUpdate(req.params.id,{$set : req.body},{new:true});
-  console.log(listing,'listing got')
-  res.status(200).json(listing) 
-  if(!listing){
+  const listing = await Listing.findById(req.params.id)
+  
+   if(req.user.id !== listing.userRef){
+     return res.status(403).json({message : 'cannot update, not authorised'})
+   }
+  const updatedlisting = await Listing.findByIdAndUpdate(req.params.id,{$set : req.body},{new:true});
+  if(!updatedlisting){
     return res.status(404).json({message : 'listing not found'})
   }
-  if(req.user.id !== listing.userRef){
-    return res.status(403).json({message : 'cannot update, not authorised'})
-  }
+  console.log(listing,'listing got')
+  res.status(200).json(listing) 
  } catch (error) {
   console.log('entered error')
   console.log(error)

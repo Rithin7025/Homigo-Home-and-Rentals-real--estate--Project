@@ -12,16 +12,17 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const currentUser  = useSelector((state)=> state.user)
-
+  const {currentUser}  = useSelector((state)=> state.user)
   const navigate = useNavigate();
 
 
   useEffect(()=>{
+    console.log(currentUser)
     if(currentUser){
+      console.log('entered')
       navigate('/')
     }
-  },[currentUser,navigate])
+  },[currentUser])
 
   const handleChange = (e) => {
     console.log(formData);

@@ -18,6 +18,7 @@ import {
     const listingId = params.listingId
     const navigate = useNavigate();
     const [spinnerLoad, setSpinnerLoad] = useState(false);
+    const [backendError,setBackendError] = useState(null)
     const [formError, setFormError] = useState(false);
     const currentUser = useSelector((state) => state.user)
     const [formData, setFormData] = useState({
@@ -57,6 +58,9 @@ import {
             setFormError(false)
             setSpinnerLoad(false)
            } catch (error) {
+            if(error.response.status === 403){
+              setBackendError('Do not have enough permissions')
+            }
             console.log(error)
            }
             
@@ -206,6 +210,7 @@ import {
     return (
       <main className={`relative  p-3 max-w-4xl mx-auto `}>
         <h1 className="font-semibold text-center my-7 text-3xl">Update Property</h1>
+       
         <hr className="p-3"/>
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-6">
           {/**left div --------------------------------------------------------------*/}
@@ -474,6 +479,7 @@ import {
             >
               {spinnerLoad ? "Property Listing" : "Update property"}
             </button>
+            {backendError && (<p>{backendError}</p>)}
           </div>
         </form>
         {/**Spinner */}

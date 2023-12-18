@@ -46,6 +46,8 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import adminRouter from "./routes/admin.route.js";
 import listingRouter from "./routes/listing.route.js";
+import conversationRouter from './routes/conversation.route.js'
+import messageRouter from './routes/message.route.js'
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
@@ -59,6 +61,10 @@ app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/listing", listingRouter);
+app.use("/api/conversation",conversationRouter);
+app.use("/api/message",messageRouter);
+
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -36,7 +36,7 @@ export const signup = async (req, res, next) => {
     
 
     try {
-      console.log('entered try ')
+      
       await newUser.save();
       
       const UnverifiedUser = await User.findOne({email});

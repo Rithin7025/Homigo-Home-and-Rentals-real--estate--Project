@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className="bg-slate-800">
+    <footer className="bg-slate-800 absolute w-full">
     <div className="w-full mx-auto max-w-screen-xl p-7   md:flex md:items-center md:justify-between">
       <span className="text-sm text-white sm:text-center dark:text-gray-00">
         © 2023 <a href="" className="text-white hover:underline">Homigo</a>. All Rights Reserved.
@@ -24,6 +24,6 @@ function Footer() {
     </div>
   </footer>
   )
-}
+} 
 
 export default Footer

@@ -29,6 +29,7 @@ const userRoutes = (
         <Route path='showListings' element={<ShowListingsPage/>}/> 
         <Route path='updateListing/:listingId' element={<UpdateListingPage/>}/> 
         <Route path='token' element={<Tokens/>}/> 
+        
         </Route>
     </Route>
 

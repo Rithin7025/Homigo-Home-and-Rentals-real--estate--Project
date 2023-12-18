@@ -66,3 +66,23 @@ export const getLandLord  = async(req,res) => {
     // return  res.status(error.response.status).json(error.status)
     }
   }
+
+  export const findUser = async(req,res)=>{
+    const id = req.params.id
+    if(!id){
+      return res.status(404).json({error : 'id not found'})
+    }
+    
+    try {
+      console.log('from user page,entered try in find user')
+      const user = await User.findById(id);
+      if(!user){
+        return res.status(404).json({message : 'user not found'})
+      }
+      return res.status(200).json(user)
+    } catch (error) {
+      console.log(error)
+      return res.status(404).json(error)
+
+    }
+  }

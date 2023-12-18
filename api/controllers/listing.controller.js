@@ -251,7 +251,7 @@ export const bookToken = async(req,res) => {
   };
 
     try {
-      console.log('entered try')
+      console.log('entered try in book token')
       console.log(options,'here are the options ')
       const order = await instance.orders.create(options)
       console.log(order , 'here the order has been received')

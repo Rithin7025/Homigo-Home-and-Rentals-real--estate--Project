@@ -205,7 +205,11 @@ export default function CreateListing() {
       setSpinnerLoad(false);
       navigate('/notification')
     } catch (error) {
-      setFormError(error.message);
+      console.log(error)
+      if(error.response.status === 403 ){
+
+        setFormError("Sorry cannot authorise your token please login again to continue");
+      }
       setSpinnerLoad(false);
     }
   };
@@ -520,6 +524,8 @@ export default function CreateListing() {
               listPage={false}
             />
           </div>
+
+          <p className="text-red-700 font-semibold">{formError && formError}</p>
           <button
             disabled={spinnerLoad ||  uploading || docsUploading }
             className="p-3 rounded-lg bg-slate-800 text-white font-semibold uppercase hover:opacity-90 hover:shadow-lg disabled:opacity-80"

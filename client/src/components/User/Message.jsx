@@ -5,7 +5,6 @@ import {format} from 'timeago.js'
 
 
 function Message({message,isOwn}) {
-    console.log(message)
     const containerClasses = isOwn ? 'flex justify-end' : 'flex justify-start';
     const messageClasses = `bg-gray-300 max-w-lg p-2 ml-3 mt-3 rounded-lg  ${isOwn ? 'bg-green-300' : 'bg-blue-300'}`;
   return (

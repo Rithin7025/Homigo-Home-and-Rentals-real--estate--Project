@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import axios from 'axios'
-import {useParams} from 'react-router-dom'
+import {useParams,Link} from 'react-router-dom'
 import {Swiper,SwiperSlide} from 'swiper/react'
 import SwiperCore from 'swiper'
 import {Navigation} from 'swiper/modules'
@@ -31,10 +31,11 @@ export default function ListingPage() {
     const params = useParams();
     const listingId = params.listingId;
     const [copied, setCopied] = useState(false);
- 
+    
     const [listing,setListing] = useState(null)
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState(false)
+    const [ownerId,setOwnerId] = useState(null)
     // const [booked,setBooked] = useState(null)
     
     useEffect(()=>{
@@ -46,8 +47,10 @@ export default function ListingPage() {
             console.log(res.data)
             const data = res.data
             setListing(data)
+            setOwnerId(res.data.userRef)
             setLoading(false)   
             setError(false)
+
             } catch (error) {
                 setLoading(false)
                 setError(true)
@@ -259,15 +262,38 @@ export default function ListingPage() {
                 {listing.furnished  ? `Furnished` : `Not furnished`}
             </li>
           </ul>
+          
           {currentUser && listing.userRef !== currentUser._id && !contact && (   <button onClick={()=> setContact(true)} className='p-3 bg-slate-700 uppercase font-semibold  rounded-lg text-white hover:opacity-90'>contact landlord</button>)}
           {contact && (<ContactLandLord listing={listing}/>)}
-          <button disabled={currentUser._id  === listing.userRef} className='p-3 bg-green-900 text-white uppercase rounded-lg font-semibold items-center flex justify-center disabled:opacity-80'><span className='mr-3'>
+          
+          { currentUser && listing.userRef === currentUser._id  ? ( <button disabled={currentUser._id  === listing.userRef} className='p-3 bg-green-900 text-white uppercase rounded-lg font-semibold items-center flex justify-center disabled:opacity-80'><span className='mr-3'>
+          
+           Chat with owner 
+           </span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+ </svg>
+ </button>
+ ) :
+ 
+ (
+          <Link  className='p-3 bg-green-900 text-white uppercase rounded-lg font-semibold items-center  justify-center ' to={`/message/${ownerId}`}>
+   <div className='flex justify-center'>
+    <span className='mr-3'> Chat with owner  </span>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+    </svg>
+  </div>
+    </Link>
+
+)
+ }
+          {/* <button disabled={currentUser._id  === listing.userRef} className='p-3 bg-green-900 text-white uppercase rounded-lg font-semibold items-center flex justify-center disabled:opacity-80'><span className='mr-3'>
           
           Chat with owner 
           </span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
 </svg>
-</button>
+</button> */}
           </div>
           <div className=' mt-2 md:w-1/2 sm:w-full sm:p-5'>
 

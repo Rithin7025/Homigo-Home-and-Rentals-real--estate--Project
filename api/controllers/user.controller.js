@@ -74,7 +74,6 @@ export const getLandLord  = async(req,res) => {
     }
     
     try {
-      console.log('from user page,entered try in find user')
       const user = await User.findById(id);
       if(!user){
         return res.status(404).json({message : 'user not found'})

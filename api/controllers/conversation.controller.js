@@ -19,6 +19,8 @@ export const newConversation = async(req,res)=>{
 }
 
 export const getUserConversation = async (req,res) => {
+
+    console.log('called get User conversationhjknjksdflksajdflkasjflkasjf;laskjf;laskfjl    ')
     const userId = req.params.userId;
     console.log(userId)
     if(!userId){
@@ -33,7 +35,6 @@ export const getUserConversation = async (req,res) => {
          })
          console.log('after conversation')
          if(!conversations){
-
              res.status(401).json({message : 'no conversation'})
          }
 
@@ -43,4 +44,16 @@ export const getUserConversation = async (req,res) => {
         console.log(error)
         res.status(500).json({message : 'error'})
     }
+}
+
+export const getConversationId = async (req,res) => {
+    console.log('entered get Conversation')
+ const senderId = req.query.senderId;
+ const receiverId = req.query.receiverId;
+
+ const conversationId = await Conversation.findOne({members: {$all : [senderId,receiverId]}})
+ if(conversationId){
+    res.status(200).json(conversationId)
+ }
+ console.log(conversationId)
 }

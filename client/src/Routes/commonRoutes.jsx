@@ -17,7 +17,7 @@ const commonRoutes = (
     <Route path="register" element={<SignUp />} />
     <Route path="otpverification" element={<Otp />}/>
      <Route element={<PrivateRoute/>}>
-     <Route path='message' element={<Messenger/>}/> 
+     <Route path='message/:ownerId' element={<Messenger/>}/> 
      </Route>
   </Route>
 );

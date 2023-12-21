@@ -217,8 +217,6 @@ export const getListings = async(req,res) => {
     const searchTerm = req.query.searchTerm || '';
     const sort = req.query.sort || 'createdAt' ; 
     const order = req.query.order || 'desc'
-    console.log(searchTerm,sort,order,'the serach term sort and order')
-    console.log('before listings')
     const listings = await Listing.find({
       //'i' means doesn't check if uppercase or lowercase
      name : {$regex : searchTerm , $options : 'i'},
@@ -230,7 +228,6 @@ export const getListings = async(req,res) => {
       [order] : order
     }).limit(limit).skip(startIndex); 
 
-    console.log('after listings',listings)
     return res.status(200).json(listings)
   } catch (error) {
       console.log(error)

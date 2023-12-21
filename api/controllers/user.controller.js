@@ -69,6 +69,7 @@ export const getLandLord  = async(req,res) => {
 
   export const findUser = async(req,res)=>{
     const id = req.params.id
+    
     if(!id){
       return res.status(404).json({error : 'id not found'})
     }

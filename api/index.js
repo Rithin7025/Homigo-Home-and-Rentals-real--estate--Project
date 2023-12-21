@@ -10,12 +10,19 @@ import { Server } from 'socket.io'
 
 const server = http.createServer(app)
 
-const io = new Server(server,{
-  cors : {
-    origin : '*',
-    methods : ["GET","POST"]
-  }
-})
+// const io = new Server(server,{
+//   cors : {
+//     origin : '*',
+//     methods : ["GET","POST"]
+//   }
+// })
+
+const io = new Server(server, {
+  pingTimeout:60000,
+  cors: {
+    origin: "*",
+  },
+});
 
 dotenv.config();
 
@@ -37,7 +44,6 @@ app.use(
 );
 
 let users = []; 
-
 //fuction to check if the userId already exists in the users arryay
 const addUser = (userId,socketId) => {
   //if the userid doesn't exist we add the user id and socket id
@@ -62,8 +68,10 @@ io.on('connection',(socket)=>{
   
   //take userId and socket id every time a user connects (coming from frontend)
   socket.on('addUser',(userId)=>{
+    console.log('a user is dded to the users 🍳🍳🍳🍳🍳🍳🍳')
     addUser(userId,socket.id);
-    io.emit('getUsers',users); 
+    console.log('add user is called , ',users)
+    io.emit('getUsers',users)
   })
   
   //adding a disconnect event handler
@@ -73,26 +81,46 @@ io.on('connection',(socket)=>{
 
     io.emit('getUsers', users);
   };
+ 
 
+  //new code
+  socket.on('joinRoom',(conversationId)=>{
+    socket.join(conversationId)
+  })
 
 
 
   // send and get message
-  socket.on('sendMessage',({senderId,receiverId,text})=>{
+  socket.on('sendMessage',({senderId,receiverId,text,conversationId})=>{
+
     //find the user and send the text received
-    console.log('entred send Message')
-    console.log(senderId,receiverId,text)
-    console.log(users,'this is the users array')
+    // console.log(senderId,receiverId,text)
     const user = getUser(receiverId)
-    if(user){
+    console.log(conversationId,"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️")
+    if(user){ 
       //sending the message to specific user 
-      io.to(user.socketId).emit("getMessage",{
+      io.to(conversationId).emit("getMessage",{
         //current user sending the  message
         senderId,
         text
       })
     }
   })
+  // // send and get message
+  // socket.on('sendMessage',({senderId,receiverId,text})=>{
+  //   //find the user and send the text received
+  //   // console.log(senderId,receiverId,text)
+  //   const user = getUser(receiverId)
+  //   console.log(user,"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️")
+  //   if(user){
+  //     //sending the message to specific user 
+  //     io.to(user.socketId).emit("getMessage",{
+  //       //current user sending the  message
+  //       senderId,
+  //       text
+  //     })
+  //   }
+  // })
   
   
   // when the user is disconnected

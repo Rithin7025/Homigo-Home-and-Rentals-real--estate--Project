@@ -18,6 +18,8 @@ const commonRoutes = (
     <Route path="otpverification" element={<Otp />}/>
      <Route element={<PrivateRoute/>}>
      <Route path='message/:ownerId' element={<Messenger/>}/> 
+     <Route path='message' element={<Messenger/>}/> 
+     
      </Route>
   </Route>
 );

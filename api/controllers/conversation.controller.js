@@ -20,9 +20,8 @@ export const newConversation = async(req,res)=>{
 
 export const getUserConversation = async (req,res) => {
 
-    console.log('called get User conversationhjknjksdflksajdflkasjflkasjf;laskjf;laskfjl    ')
     const userId = req.params.userId;
-    console.log(userId)
+    console.log(userId,'here is the user id')
     if(!userId){
         console.log('no user Id')
         res.status(404).json({message : 'No conversation for this user'})
@@ -33,12 +32,10 @@ export const getUserConversation = async (req,res) => {
          const conversations = await Conversation.find({
             members : {$in : [userId]}
          })
-         console.log('after conversation')
          if(!conversations){
              res.status(401).json({message : 'no conversation'})
          }
 
-         console.log(conversations)
          res.status(200).json(conversations)
     } catch (error) {
         console.log(error)
@@ -51,9 +48,10 @@ export const getConversationId = async (req,res) => {
  const senderId = req.query.senderId;
  const receiverId = req.query.receiverId;
 
- const conversationId = await Conversation.findOne({members: {$all : [senderId,receiverId]}})
+ const conversationId = await Conversation.findOne({members: {$all : [senderId,receiverId]}});
+ console.log(conversationId)
  if(conversationId){
     res.status(200).json(conversationId)
  }
- console.log(conversationId)
+ console.log(conversationId,'the conversation id')
 }

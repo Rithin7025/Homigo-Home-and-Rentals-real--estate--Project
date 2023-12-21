@@ -47,6 +47,13 @@ export default function Header() {
         <ul className='flex gap-4 '>
             {
             currentUser ? 
+            <Link to='/message'>
+            <li className='hidden sm:inline text-slate-600 hover:underline cursor-pointer'>Messages</li>
+            </Link> : ''
+            }
+            
+            {
+            currentUser ? 
             <Link to='/token'>
             <li className='hidden sm:inline text-slate-600 hover:underline cursor-pointer'>Tokens</li>
             </Link> : ''
@@ -62,6 +69,8 @@ export default function Header() {
             {currentUser ? (<img className='rounded-full h-7 w-7 object-cover'  src={currentUser.avatar} alt='profile'/>) : <li className='hidden sm:inline text-slate-600 hover:underline cursor-pointer'>Sign in</li>
  }
             </Link>
+
+
         </ul>
         </div>
     </header>

@@ -3,8 +3,6 @@ import {Message} from '../models/Message.model.js'
 
 export const newMessage = async(req,res) => {
     const newMessage = new Message(req.body)
-    console.log(req.body,'here is the request body')
-    console.log(newMessage,'here the new message')
     try {
         if(!newMessage){
             return res.status(404).json({message : 'no message found'})

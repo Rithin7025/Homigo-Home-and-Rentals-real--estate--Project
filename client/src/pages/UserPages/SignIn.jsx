@@ -54,12 +54,13 @@ function SignIn() {
      
  
    }catch(error){
-      console.log(error)
+      console.log(error.response)
        if(error.response.status === 404){
+           
           setError('incorrect username or password, please try again');
           setLoading(false)
        }
-       if(error.response.status === 404 && error.response.data.message === 'user not found'){
+       if(error.response.status === 404 && error.response.data.message === 'User not found'){
           setError('User not found!!');
           setLoading(false)
        }
@@ -69,7 +70,7 @@ function SignIn() {
         setLoading(false)
      }
 
-     if(error.response.status === 403 && error.response.data.errorType === 'User blocked'){
+     if(error.response.status === 403 && error.response.data.message === 'User blocked'){
       setLoading(false)
       setError(null)
       console.log('entered into the lbolck')
@@ -85,7 +86,7 @@ function SignIn() {
         });
      }
 
-     if(error.response.status === 403 && error.response.data.errorType === 'unauthenticated'){
+     if(error.response.status === 403 && error.response.data.message === 'User not verified'){
       setLoading(false)
       setError(null)
 
@@ -102,12 +103,6 @@ function SignIn() {
 
         navigate('/otpverification')
    }
-
-     
-
-
-       
-     
    }
  
    }

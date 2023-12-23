@@ -27,3 +27,18 @@ export const getUserMessages = async(req,res)=>{
         
     }
 }
+
+export const updateMessagesToRead = async(req,res) => {
+    const id = req.params.conversationId;
+    if(!id){
+        return res.status(403).json({error : 'could not parse id'})
+    }
+     try {
+
+      const result = await Message.updateMany({conversationId : id},{$set : {read : true}})
+
+      return res.status(200).json(result)
+     } catch (error) {
+        return res.status(500).json(error.message)
+     }
+}

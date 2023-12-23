@@ -58,7 +58,7 @@ export const getLandLord  = async(req,res) => {
       if (!user){
         res.status(404).json({message : 'user not found'})
       }
-    
+     
       const {password : pass, ...rest} = user._doc
       res.status(200).json(rest)
     } catch (error) { 
@@ -69,13 +69,12 @@ export const getLandLord  = async(req,res) => {
 
   export const findUser = async(req,res)=>{
     const id = req.params.id
-    
-    if(!id){
-      return res.status(404).json({error : 'id not found'})
-    }
-    
+
     try {
+      console.log(id)
+      console.log('🍻🍻🍻🍻🍻')
       const user = await User.findById(id);
+      console.log('after')
       if(!user){
         return res.status(404).json({message : 'user not found'})
       }

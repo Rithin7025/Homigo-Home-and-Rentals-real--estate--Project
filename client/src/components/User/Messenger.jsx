@@ -25,7 +25,10 @@ function Messenger() {
 
   //function to set the currentChat and the owner info
   const handleConversationClick = async (clickedConversation) => {
-    
+    console.log(clickedConversation,'❤️❤️')
+    try {
+      
+    const conversationId = clickedConversation._id
     setCurrentChat(clickedConversation);
     setConvoId(clickedConversation._id);
     //newcode
@@ -36,11 +39,18 @@ function Messenger() {
     const ownerId = clickedConversation.members.find(
       (user) => user !== currentUser._id
     );
-   
+    
     const response = await axios.get(`/api/user/getUser/${ownerId}`);
     if (response) {
       setOwner(response.data);
       console.log(response.data);
+    }
+    
+    //updating all messages to read
+    const updateMessagesToRead = await axios.get(`/api/message/getUserMessages/mark-as-read/${conversationId}`)
+    
+    } catch (error) {
+      console.log(error)
     }
   };
 
@@ -57,13 +67,16 @@ function Messenger() {
   }, []);
 
   //to fecth the conversations of a user(chats)
+  
   useEffect(() => {
     const fetchConversations = async () => {
-      //finding the owner in the header
-      const response = await axios.get(`/api/user/getUser/${String(ownerId)}`);
-      if (response) {
-        setOwner(response.data);
-        console.log(response.data);
+      //finding the owner in the header   
+      if(ownerId){
+        const response = await axios.get(`/api/user/getUser/${String(ownerId)}`);
+        if (response) {
+          setOwner(response.data);
+          console.log(response.data);
+        }
       }
       console.log("before fecthing conhjjjhjhver");
       const res = await axios.get(
@@ -73,6 +86,7 @@ function Messenger() {
 
       //setting the message with the owner if there is previous chat
       //api to find out the conversation id
+      console.log(ownerId,currentUser._id)
       const conversationId = await axios.get(
         "/api/conversation/getConversationId",
         { params: { senderId: currentUser._id, receiverId: ownerId } }

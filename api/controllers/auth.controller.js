@@ -149,19 +149,27 @@ export const  signin = async (req, res, next) => {
     const validUser = await User.findOne({ email });
     console.log(validUser, 'found User');
     if (!validUser) {
-      return res.status(404).json({message : "User not found"});
+      const error = errorHandler(404,"User not found");
+      //the catch block will catch the thrown error
+      throw error;
     }
     const validPassword = bcrypt.compareSync(password, validUser.password);
-    if (!validPassword) return res.status(401).json({message : 'Incorrect password, please try again', errorType : 'wrong credentials'});  
+    if (!validPassword){
+      const error = errorHandler(401, "Incorrect password, please try again");
+      throw error;
+    }
     
     if(validUser.isBlocked){
-      return res.status(403).json({errorType : 'User blocked'})
+      const error = errorHandler(403,"User blocked");
+      throw error;
     }
 
     if(!validUser.isVerified){
       req.session.userId = validUser._id;
       console.log('entered into the unauthenticated');
-      return res.status(403).json({message : 'User is not verified',errorType : 'unauthenticated'})
+      const error = errorHandler(403,"User not verified")
+      error.errorType = 'unauthenticated'
+      throw error
     }
 
       
@@ -173,7 +181,8 @@ export const  signin = async (req, res, next) => {
 
     res.cookie('access_token',token,{httpOnly : true}).status(200).json(userInfo)
   } catch (error) {
-    return res.status(404).json({message : 'user not found'})
+    // Now, instead of manually setting status code and message, use the errorHandler
+    next(error)
   }
 };
 

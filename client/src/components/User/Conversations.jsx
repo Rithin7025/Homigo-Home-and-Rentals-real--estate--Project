@@ -20,17 +20,20 @@ useEffect(()=>{
   console.log(ownerId)
   const fetchfriendData = async() => {
      const res = await axios.get(`/api/user/getUser/${friendId}`)
+
      if(res){
        setFriendData(res.data)
        console.log(res.data)
         console.log(friendData)
         const color = ownerId == friendId ? 'bg-slate-300' : 'bg-neutral-100'
-        
+        setBackgroundColor(color)
      }
   }
   fetchfriendData()
 
 },[currentUser])
+
+
 console.log(backgroundColor)
   return (
     <div>

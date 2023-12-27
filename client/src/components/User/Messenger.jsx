@@ -40,7 +40,8 @@ function Messenger() {
       (user) => user !== currentUser._id
     );
     
-    const response = await axios.get(`/api/user/getUser/${ownerId}`);
+    const response = await axios.get(`/api/user/getUser/${ownerId}`)
+    
     if (response) {
       setOwner(response.data);
       console.log(response.data);
@@ -48,6 +49,8 @@ function Messenger() {
     
     //updating all messages to read
     const updateMessagesToRead = await axios.get(`/api/message/getUserMessages/mark-as-read/${conversationId}`)
+    
+    console.log(updateMessagesToRead)
     
     } catch (error) {
       console.log(error)
@@ -67,34 +70,24 @@ function Messenger() {
   }, []);
 
   //to fecth the conversations of a user(chats)
-  
-  useEffect(() => {
-    const fetchConversations = async () => {
-      //finding the owner in the header   
+  useEffect(()=>{
+    const fetchOwner = async() => {
+
+      //finding the owner in the header
       if(ownerId){
         const response = await axios.get(`/api/user/getUser/${String(ownerId)}`);
         if (response) {
           setOwner(response.data);
           console.log(response.data);
         }
-      }
-      console.log("before fecthing conhjjjhjhver");
-      const res = await axios.get(
-        `/api/conversation/getUserConversation/${currentUser._id}`
-      );
-      setConversation(res.data);
+        const conversationId = await axios.get(
+          "/api/conversation/getConversationId",
+          { params: { senderId: currentUser._id, receiverId: ownerId } }
+        );
 
-      //setting the message with the owner if there is previous chat
-      //api to find out the conversation id
-      console.log(ownerId,currentUser._id)
-      const conversationId = await axios.get(
-        "/api/conversation/getConversationId",
-        { params: { senderId: currentUser._id, receiverId: ownerId } }
-      );
-      console.log(conversationId.data);
-      //doing the same as the fetchMessages
+         //doing the same as the fetchMessages
       setCurrentChat(conversationId.data);
-
+          
       if (conversationId.data._id) {
         const res = await axios.get(
           `/api/message/getUserMessages/${currentChat?._id}`
@@ -107,9 +100,27 @@ function Messenger() {
           console.log(message);
         }
       }
+      } 
+    }
+    fetchOwner();
+  },[currentUser._id])
+
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      
+      const res = await axios.get(
+        `/api/conversation/getUserConversation/${currentUser._id}`
+      );
+      setConversation(res.data);
+
+      //setting the message with the owner if there is previous chat
+      //api to find out the conversation id
+      console.log(ownerId,currentUser._id)
+      
     };
     fetchConversations();
-  }, [currentUser._id]);
+  }, [currentUser._id,message]);
 
   console.log(currentChat);
   //to fetch user messages

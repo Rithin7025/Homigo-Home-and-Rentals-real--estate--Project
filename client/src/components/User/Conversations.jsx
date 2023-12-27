@@ -3,9 +3,12 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 function Conversations({conversation,owner}) {
- 
-const [friendData,setFriendData] = useState(null)
-const {currentUser} = useSelector((state)=> state.user)
+  console.log(conversation.unreadCount)
+  const unreadCount = conversation.unreadCount;
+  const [friendData,setFriendData] = useState(null)
+  const {currentUser} = useSelector((state)=> state.user)
+  console.log(conversation.members)
+  console.log(currentUser._id)
 const ownerId = owner
 const [backgroundColor,setBackgroundColor]= useState('')
 
@@ -20,7 +23,6 @@ useEffect(()=>{
   console.log(ownerId)
   const fetchfriendData = async() => {
      const res = await axios.get(`/api/user/getUser/${friendId}`)
-
      if(res){
        setFriendData(res.data)
        console.log(res.data)
@@ -34,7 +36,6 @@ useEffect(()=>{
 },[currentUser])
 
 
-console.log(backgroundColor)
   return (
     <div>
         <div className={`flex p-3 gap-3 items-center hover:bg-slate-300 bg-neutral-100 hover:cursor-pointer  border-gray-400`}>
@@ -46,8 +47,11 @@ console.log(backgroundColor)
         <span className='font-semibold text-sm'>{friendData && friendData?.userName }</span>
         <span className='text-xs text-gray-500'></span>
         </div>
-        
-        <span className='text-xs text-gray-500 mr-3'> </span>
+        {/* {
+         unreadCount > 0 && (
+            <span className='text-[12px] text-white text-center h-5 flex items-center justify-center w-5  bg-green-900 rounded-full'> {unreadCount}</span>
+          )
+        } */}
        
        </div>
 

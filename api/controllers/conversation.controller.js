@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import { Conversation } from "../models/Conversation.model.js";
+import { Message } from "../models/Message.model.js";
 
 
 export const newConversation = async(req,res)=>{
@@ -21,23 +22,35 @@ export const newConversation = async(req,res)=>{
 export const getUserConversation = async (req,res) => {
 
     const userId = req.params.userId;
-    console.log(userId,'here is the user id')
     if(!userId){
+        
         console.log('no user Id')
         res.status(404).json({message : 'No conversation for this user'})
     }
     try {
-        console.log('entered try in getConversation')
         //check the user id is inside the array of members
          const conversations = await Conversation.find({
             members : {$in : [userId]}
-         })
+         }).sort({"updatedAt" : -1})
+
+         //finding the unread conversation
+         const conversaionWithUnreadCount = await Promise.all(  
+            conversations.map(async(conversation)=>{
+                const unreadCount = await Message.countDocuments({conversationId : conversation._id,read : false})
+                return {
+                    //appending the count along with the document
+                    ...conversation.toObject(),
+                    unreadCount
+                }
+            })
+         ) 
+         console.log(conversaionWithUnreadCount,'convesation with unread count  ')
          if(!conversations){
              res.status(401).json({message : 'no conversation'})
          }
 
-         res.status(200).json(conversations)
-    } catch (error) {
+         return  res.status(200).json(conversaionWithUnreadCount)
+    } catch (error) {   
         console.log(error)
         res.status(500).json({message : 'error'})
     }

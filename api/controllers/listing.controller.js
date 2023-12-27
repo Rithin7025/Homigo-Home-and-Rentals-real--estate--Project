@@ -190,8 +190,6 @@ export const getListings = async(req,res) => {
     const startIndex = parseInt(req.query.startIndex) || 0 ;
     let offer = req.query.offer;
     
-    
-    
     //checking the offer from home and from the search page // from home the offer is 'undefined' so checking both condition
     if(offer === undefined || offer === 'false'){
       offer = { $in : [false , true]}
@@ -247,7 +245,7 @@ export const bookToken = async(req,res) => {
     receipt: shortid.generate(),
     payment_capture,
   };
-
+  
     try {
       console.log('entered try in book token')
       console.log(options,'here are the options ')

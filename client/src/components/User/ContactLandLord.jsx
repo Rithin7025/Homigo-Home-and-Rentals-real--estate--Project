@@ -21,7 +21,7 @@ export default function ContactLandLord({listing}) {
   return (
     <>
      {landLord && (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4'> 
           <p>Contact  <span className='font-semibold'>{landLord.userName}</span> for <span className='font-semibold'>{listing.name.toLowerCase()}</span></p>  
           <textarea className='w-full rounded-lg p-3 border' placeholder='Enter your message' name="message" id="message" rows="2" value={message} onChange={handleChange}></textarea>
           {/**mailto will activate the mail in your system */}

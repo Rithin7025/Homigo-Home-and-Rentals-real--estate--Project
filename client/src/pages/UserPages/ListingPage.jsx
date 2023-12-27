@@ -182,6 +182,7 @@ export default function ListingPage() {
             <Swiper navigation>
                 {
                     listing.imageUrls.map((url)=> (
+                      
                         <SwiperSlide  key={url} > 
                             <div className='h-[450px]' style={{background : `url(${url}) center  no-repeat`,backgroundSize : 'cover'}}>
 

@@ -245,7 +245,7 @@ export const bookToken = async(req,res) => {
     receipt: shortid.generate(),
     payment_capture,
   };
-  
+
     try {
       console.log('entered try in book token')
       console.log(options,'here are the options ')
@@ -406,5 +406,17 @@ const sendTokenBookedMail = async(name,email,PropertyName,buyerName,buyerEmail) 
   } catch (error) {  
     console.log(error)
 
+  }
+}
+
+
+//to fetch listings
+export const getEveryListings = async(req,res)=>{
+  try {
+    console.log('entered in to the getEveryListing foa admin')
+    const Listings = await Listing.find()
+   return res.status(200).json(Listings)
+  } catch (error) {
+    console.log(error)
   }
 }

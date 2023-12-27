@@ -3,7 +3,7 @@ import Datatable from '../../components/admin/Datatable'
 
 function AdminViewAllListings() {
   return (
-    <div>
+    <div className=''>
       <Datatable/>
     </div>
   )

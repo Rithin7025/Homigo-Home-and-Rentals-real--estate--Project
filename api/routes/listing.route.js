@@ -1,7 +1,21 @@
 import express from 'express'
-const router = express.Router();
-import {createListing, getUserListings,getUserListing,deleteUserListing,updateUserListing,getListing,getListings,bookToken,paymentSuccessVerification,getIsBookedDetails,getToken} from '../controllers/listing.controller.js'
 import {verifyToken } from '../utils/verifyUser.js'
+
+const router = express.Router();
+import {
+    createListing,
+     getUserListings,
+     getUserListing,
+     deleteUserListing,
+     updateUserListing,
+     getListing,
+     getListings,
+     bookToken,
+     paymentSuccessVerification,
+     getIsBookedDetails,
+     getToken,
+     getEveryListings
+    } from '../controllers/listing.controller.js'
 
 
 //create a listing
@@ -36,4 +50,8 @@ router.get('/getIsBookedDetails/:id',getIsBookedDetails)
 
 //to fetch token 
 router.get('/getToken/:id',getToken);
+
+//ro fetch every listing ever made
+router.get('/getEveryListings',getEveryListings)
+
 export default router

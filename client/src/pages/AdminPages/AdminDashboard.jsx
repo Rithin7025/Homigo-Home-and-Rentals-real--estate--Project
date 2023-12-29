@@ -7,6 +7,7 @@ import axios from 'axios'
 
 function AdminDashboard() {
     const [transaction,setTransaction] = useState(null);
+
     const {admin} = useSelector((admin) => admin)
     console.log(admin)
 
@@ -30,6 +31,8 @@ function AdminDashboard() {
         fetchTransactionsAndAmount()
   
       },[])
+
+     
 
   return (
     <div className='overflow-scroll h-screen'>

@@ -27,6 +27,9 @@ const tokenSchema = new mongoose.Schema({
    expiryDate : {
         type : Date,
         required : true
+    },
+    type : {
+        type : String,
     }
 },{timestamps : true})
 

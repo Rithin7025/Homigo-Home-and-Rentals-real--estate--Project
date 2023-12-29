@@ -303,7 +303,9 @@ export const paymentSuccessVerification = async(req,res) => {
              buyerUserId : userId,
              sellerUserId : listing.userRef,
              totalPrice : amount /100,
-             expiryDate : threeMonthsLater
+             expiryDate : threeMonthsLater,
+             type : listing.type
+
         })
         //saving the new token
 

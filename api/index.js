@@ -151,6 +151,7 @@ import adminRouter from "./routes/admin.route.js";
 import listingRouter from "./routes/listing.route.js";
 import conversationRouter from './routes/conversation.route.js'
 import messageRouter from './routes/message.route.js'
+import tokenRouter from './routes/token.route.js'
 
 server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
@@ -166,6 +167,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/listing", listingRouter);
 app.use("/api/conversation",conversationRouter);
 app.use("/api/message",messageRouter);
+app.use("/api/token",tokenRouter);
 
 
 

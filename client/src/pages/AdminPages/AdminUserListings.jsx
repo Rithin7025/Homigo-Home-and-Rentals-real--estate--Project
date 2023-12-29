@@ -23,7 +23,7 @@ export default function AdminUserListings() {
         console.log(res.data)
         setLoad(prev => !prev)
         
-    } catch (error) {
+    } catch (error) { 
         
     }
   }
@@ -39,6 +39,10 @@ export default function AdminUserListings() {
         console.log(error)
     }
   }
+
+  useEffect(()=>{
+
+  },[load])
 
   return (
     <div>

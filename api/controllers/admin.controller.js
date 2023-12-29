@@ -46,10 +46,8 @@ export const listUsers = async(req,res) => {
     return res.status(403).json({message : "Access Denied. Insufficient privilages"})
    }
   const users = await User.find()
-  console.log(users)
   res.json(users)
   
-console.log('users here from admin controller list users')
 }
 
 

@@ -14,7 +14,11 @@ import {
      paymentSuccessVerification,
      getIsBookedDetails,
      getToken,
-     getEveryListings
+     getEveryListings,
+     blockProperty,
+     unblockProperty,
+     getRentListings,
+     getSaleListings
     } from '../controllers/listing.controller.js'
 
 
@@ -53,5 +57,19 @@ router.get('/getToken/:id',getToken);
 
 //ro fetch every listing ever made
 router.get('/getEveryListings',getEveryListings)
+
+//block a property
+router.patch('/blockProperty/:propertyId',blockProperty)
+
+//unblock a property
+router.patch('/unblockProperty/:propertyId',unblockProperty)
+
+//to fetch listings of rent
+router.get('/getRentListings',getRentListings)
+
+
+//to fetch listings of rent
+router.get('/getSaleListings',getSaleListings)
+
 
 export default router

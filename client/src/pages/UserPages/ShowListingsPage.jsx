@@ -97,7 +97,7 @@ const [listingError,setListingError] = useState(false)
     }
 
     {
-      listingDetails.length === 0 &&  (
+     !tokenError && listingDetails.length === 0 &&  (
         <div className="bg-blue-50 border-l-4 h-screen w-screen border-blue-500 text-blue-700 p-4 mt-4" role="alert">
         <p className="font-bold">No Active Listings</p>
         <p>You currently don't have any active listings.!</p>
@@ -110,8 +110,8 @@ const [listingError,setListingError] = useState(false)
       
       tokenError && (
 
-        <div className="flex items-center justify-center h-screen">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div className="flex items-center justify-center h-screen w-screen">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-10 py-7 rounded relative" role="alert">
           <span className="block sm:inline">&#x26A0; </span>
           <span className="hidden sm:inline">Cannot authorize your token. Please log in again.</span>
           

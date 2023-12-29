@@ -9,6 +9,7 @@ import Token from '../models/token.model.js'
 import {configEmail , configPassword} from '../config/config.js'
 import nodemailer from 'nodemailer'
 import User from "../models/user.model.js";
+import {errorHandler} from '../utils/errorHandler.js'
 
 
 
@@ -85,7 +86,7 @@ export const getUserListings = async(req,res) => {
    const id = req.params.id;
    try{
     if(req.user.id === id){
-        const listings = await Listing.find({userRef : id,isVerified : true});
+        const listings = await Listing.find({userRef : id,isVerified : true,isBlocked : false});
         res.status(200).json(listings)
     }else{
         return res.status(404).json({message : 'Not authorised , login again'})
@@ -99,7 +100,6 @@ export const getUserListings = async(req,res) => {
 }
 
 export const getUserListing = async(req,res) => {
-  console.log('entered in getUser backend')
   const id  = req.params.id
   console.log(id)
   try {
@@ -107,15 +107,12 @@ export const getUserListing = async(req,res) => {
       return res.status(400).json({ error: 'Invalid ID format' });
     }
     const objectId =new mongoose.Types.ObjectId(id)
-    console.log(objectId)
-    console.log('before finding')
     const unverifiedListing = await Listing.findById(objectId)
-    console.log('after finding')
+
     if(!unverifiedListing){
       return res.status(404).json({message : 'Property not found'})
     }
     res.status(200).json(unverifiedListing)
-
   } catch (error) {
     console.log(error.message,'teh error from backedn')
   }
@@ -144,12 +141,12 @@ export const deleteUserListing = async(req,res) => {
 
 export const updateUserListing = async(req,res)=> {
   console.log('entered in updateUserListig------------------------------------------------------------------//////')
-
+   const propertyId = req.params.id
   console.log(req.params.id);
   console.log(req.body)
 
  try { 
-  const listing = await Listing.findById(req.params.id)
+  const listing = await Listing.findOne({_id : propertyId, isBlocked : false})
   
    if(req.user.id !== listing.userRef){
      return res.status(403).json({message : 'cannot update, not authorised'})
@@ -221,7 +218,8 @@ export const getListings = async(req,res) => {
      offer,
      furnished,
      parking,
-     type
+     type,
+     isBlocked : false
     }).sort({
       [order] : order
     }).limit(limit).skip(startIndex); 
@@ -418,5 +416,58 @@ export const getEveryListings = async(req,res)=>{
    return res.status(200).json(Listings)
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const blockProperty = async(req,res,next)=>{
+  const id  = req.params.propertyId;
+  if(!id){
+    const error = errorHandler(404,'invalid id')
+    throw error
+  }
+  try {
+     const updatedPropertyToBlocked = await Listing.findOneAndUpdate({_id : id},{isBlocked : true},{new: true})
+     return res.status(200).json(updatedPropertyToBlocked)
+  } catch (error) {
+    next(error)
+  }
+}
+export const unblockProperty = async(req,res,next)=>{
+  const id  = req.params.propertyId;
+  if(!id){
+    const error = errorHandler(404,'invalid id')
+    throw error
+  }
+  try {
+     const updatedPropertyToBlocked = await Listing.findOneAndUpdate({_id : id},{isBlocked : false},{new: true})
+     return res.status(200).json(updatedPropertyToBlocked)
+  } catch (error) {
+    next(error)
+  }
+} 
+
+
+//to fetch listings of rent
+export const getRentListings = async(req,res,next)=>{
+  try {
+    console.log('entered in to the getRent for admin')
+    const Listings = await Listing.find({type : 'rent'})
+   return res.status(200).json(Listings)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+}
+
+
+//to fetch listings of sale
+export const getSaleListings = async(req,res,next)=>{
+  try {
+    const Listings = await Listing.find({type : 'sale'})
+    
+   return res.status(200).json(Listings)
+  } catch (error) {
+    
+    next(errorHandler(500, 'internal server error'))
   }
 }

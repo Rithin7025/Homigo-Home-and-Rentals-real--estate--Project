@@ -324,7 +324,6 @@ export const googleAuth = async(req,res) => {
 export const signOut = (req,res) => {
   try {
     console.log('entered sign out')
-    console.log(req.cookies)
     res.clearCookie('access_token');
     res.clearCookie('session_cookie');
     res.status(200).json({message : "User has been logged out"})

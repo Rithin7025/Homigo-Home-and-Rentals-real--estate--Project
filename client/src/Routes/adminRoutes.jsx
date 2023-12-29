@@ -13,7 +13,6 @@ import AdminPropertyControlPanel from "../pages/AdminPages/AdminPropertyControlP
 const adminRoutes = (
     <Route path="/" element={<AdminLayout/>}>
         <Route element={<AdminPrivateRoute/>}>
-    
         <Route path="/admin/dashboard"  element={<AdminDashboard/>}/>
         <Route path="/admin/usersList"  element={<AdminUserListings/>}/>
         <Route path="/admin/listings"  element={<AdminViewAllListings/>}/>  {/**listing page on progression */}

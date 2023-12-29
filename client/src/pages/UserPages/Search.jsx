@@ -170,6 +170,7 @@ console.log(listings)
 
                     </div>
                     <button className='bg-slate-800 p-3 uppercase text-white font-semibold hover:opacity-90 rounded-lg'>Search</button>
+                    
             </form>
         </div>
     <div className='flex-1'>

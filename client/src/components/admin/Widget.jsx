@@ -248,7 +248,7 @@ function Widget({ type }) {
 
             <KeyboardArrowUp className=' bg-emerald-500' />
             
-            <span className='text-green-600'> 20%</span>  
+            <span className='text-green-600'></span>  
             </div>
             <div className="">
             {/* <Person3Outlined className='ml-7 bg-blue-500 rounded-lg'/> */}

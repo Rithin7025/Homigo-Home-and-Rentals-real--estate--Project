@@ -7,7 +7,9 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import http from 'http'
 import { Server } from 'socket.io'
+import path from "path";
 
+const __dirname = path.resolve();
 const server = http.createServer(app)
 
 // const io = new Server(server,{
@@ -169,6 +171,13 @@ app.use("/api/conversation",conversationRouter);
 app.use("/api/message",messageRouter);
 app.use("/api/token",tokenRouter);
 
+
+
+app.use(express.static(path.join(__dirname,'/client/dist')));
+
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,'client','dist','index.html'))
+})
 
 
 app.use((err, req, res, next) => {

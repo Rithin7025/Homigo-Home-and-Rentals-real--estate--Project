@@ -7,13 +7,17 @@ import { useSelector } from 'react-redux';
 
 function Featured() {
 
-    const [rentPercentage ,setRentPercentage] = useState(0);
+    const [rentAmount ,setrentAmount] = useState(0);
 
-    const [salePercentage ,setSalePercentage] = useState(0);
+    const [saleAmount,setSaleAmount] = useState(0);
 
     const [totalAmount,setTotalAmount] = useState(null);
 
-    const [todaySaleAmount ,setTodaySaleAmount] = useState(null)
+    const [todaySaleAmount ,setTodaySaleAmount] = useState(0)
+
+    const [lastWeekSaleAmount,setLastWeekSaleAmount] = useState(0)
+
+    const [lastMonthSaleAmont,setLastMonthSaleAmount] = useState(null)
 
     const {admin} = useSelector((admin)=> admin)
 
@@ -24,13 +28,41 @@ function Featured() {
         try {
           const res = await axios.get('/api/token/getSalesOfTokenThisMonth');
           console.log(res.data)
-          setRentPercentage(res.data)
+          if(res.data.length > 0){
+            setrentAmount(res.data[0].totalSales)
+            
+          }else {
+            setrentAmount(0)
+          }
+          console.log(rentAmount)
         } catch (error) {
           console.log(error)
         }
       }
 
       fetchSalesOfThisMonthRent()
+    },[])
+
+    //fetch sales of this month sale
+    useEffect(()=>{
+      const fetchSalesOfThisMonthSale = async()=>{
+        try {
+          const res = await axios.get('/api/token/getSalesOfTokenThisMonthSale');
+          console.log(res.data)
+          if(res.data.length == 0){
+            console.log('entered')
+            setSaleAmount(0)
+            
+          }else {
+            setSaleAmount(res.data[0].totalSales)
+          }
+          
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      fetchSalesOfThisMonthSale ()
     },[])
 
     useEffect(()=>{
@@ -95,7 +127,8 @@ function Featured() {
           const res = await axios.get('/api/token/getTodaySales')
           console.log(res.data[0]?.totalSales)
 
-          if(res){
+          if(res){    
+           
             setTodaySaleAmount(res.data[0]?.totalSales)
           }
         } catch (error) {
@@ -105,6 +138,48 @@ function Featured() {
 
       fetchTodaySales()
     },[admin])
+
+
+    //to find the total sale last week 
+    
+    useEffect(()=>{
+      const fetchSalesOfLastWeek = async()=>{
+
+        try {
+          const res = await axios.get('/api/token/getSalesOfLastWeek')
+          console.log(res.data[0].totalSales)
+          if(res.data.length > 0){
+            console.log('entered')
+            setLastWeekSaleAmount(res.data[0].totalSales)
+          }
+          
+        } catch (error) {
+          console.log(error)
+        }
+      } 
+      fetchSalesOfLastWeek()
+    },[admin])
+
+    //to find teh total sale of last Month
+    useEffect(()=>{
+      const fetchSalesOfLastMonth = async() => {
+
+        try {
+          const res = await axios.get('/api/token/getSalesOfLastMonth')
+          if(res.data){
+           console.log(res.data)
+           if(res.data.length > 0){
+
+             setLastMonthSaleAmount(res.data[0].totalSales)
+           }
+            
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      fetchSalesOfLastMonth()
+    },[])
 
     const RentPercentage = 56;
     const SalePercentage = 46;
@@ -199,12 +274,12 @@ function Featured() {
                 </div>  
                 <div className='flex flex-col items-center'>
                     <p className='font-semibold text-slate-700'>Last week</p>
-                    <p className='text-red-700 font-bold'>$ 450</p>
+                    <p className='text-red-700 font-bold'>₹ {lastWeekSaleAmount && lastWeekSaleAmount}</p>
 
                 </div>
                 <div className='flex flex-col items-center text-slate-700'>
                     <p className='font-semibold'>Last month</p>
-                    <p className='text-blue-900 font-bold'>$ 450</p>
+                    <p className='text-blue-900 font-bold'>₹ {lastMonthSaleAmont && lastMonthSaleAmont}</p>
 
                 </div>
                

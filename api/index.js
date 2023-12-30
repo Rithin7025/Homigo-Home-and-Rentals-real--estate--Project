@@ -10,14 +10,8 @@ import { Server } from 'socket.io'
 import path from "path";
 
 const __dirname = path.resolve();
-const server = http.createServer(app)
 
-// const io = new Server(server,{
-//   cors : {
-//     origin : '*',
-//     methods : ["GET","POST"]
-//   }
-// })
+const server = http.createServer(app)
 
 const io = new Server(server, {
   pingTimeout:60000,
@@ -108,21 +102,7 @@ io.on('connection',(socket)=>{
       })
     }
   })
-  // // send and get message
-  // socket.on('sendMessage',({senderId,receiverId,text})=>{
-  //   //find the user and send the text received
-  //   // console.log(senderId,receiverId,text)
-  //   const user = getUser(receiverId)
-  //   console.log(user,"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️")
-  //   if(user){
-  //     //sending the message to specific user 
-  //     io.to(user.socketId).emit("getMessage",{
-  //       //current user sending the  message
-  //       senderId,
-  //       text
-  //     })
-  //   }
-  // })
+
   
   
   // when the user is disconnected
@@ -159,9 +139,6 @@ server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
 
-app.get("/", (req, res) => {
-  res.json({ server: "from the server" });
-});
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
@@ -175,9 +152,7 @@ app.use("/api/token",tokenRouter);
 
 app.use(express.static(path.join(__dirname,'/client/dist')));
 
-app.get('*',(req,res)=>{
-  res.sendFile(path.join(__dirname,'client','dist','index.html'))
-})
+app.get('*',(req,res)=> res.sendFile(path.join(__dirname,'client','dist','index.html')))
 
 
 app.use((err, req, res, next) => {
@@ -189,4 +164,8 @@ app.use((err, req, res, next) => {
     statusCode,
     message,
   });
+});
+
+app.get("/", (req, res) => {
+  res.json({ server: "from the server" });
 });

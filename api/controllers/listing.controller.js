@@ -219,7 +219,8 @@ export const getListings = async(req,res) => {
      furnished,
      parking,
      type,
-     isBlocked : false
+     isBlocked : false,
+     isVerified : true
     }).sort({
       [order] : order
     }).limit(limit).skip(startIndex); 

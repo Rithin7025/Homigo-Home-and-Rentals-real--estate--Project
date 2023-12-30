@@ -14,6 +14,9 @@ import {Link} from 'react-router-dom'
 function Profile() {
   const fileref = useRef(null);
   const {currentUser , loading } = useSelector((state)=> state.user);
+
+console.log('profile')
+
   const [file,setFile] = useState(undefined);
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [fileUploadError , setFileUploadError] = useState(false);
@@ -22,7 +25,7 @@ function Profile() {
   const [error,setError] = useState(null);
   const dispatch = useDispatch();
   const [messageForImageUpload, setMessageForImageUpload] = useState('Image uplaoded successfully! click update')
-  const [successMessage , setSuccessMessage ] = useState(false);
+  const [successMessage , setSuccessMessage ] = useState(false)
   const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false)
   
   //useEffect which will run if the file is uploaded 
@@ -32,7 +35,6 @@ function Profile() {
     }
   },[file]) //this will run when ever a file is changed/uploaded 
   
-
 
 
 

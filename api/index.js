@@ -20,7 +20,7 @@ const io = new Server(server, {
   },
 });
 
-dotenv.config();
+dotenv.config({path:".env"});
 
 const allowedOrigins = [
   "http://localhost:5173",

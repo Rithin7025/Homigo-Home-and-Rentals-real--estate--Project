@@ -1,3 +1,4 @@
+import 'dotenv/config.js'
 import { Listing } from "../models/listing.model.js";
 import mongoose from "mongoose";
 import dotenv from 'dotenv'

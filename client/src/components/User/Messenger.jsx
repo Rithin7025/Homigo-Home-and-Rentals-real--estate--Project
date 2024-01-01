@@ -5,6 +5,10 @@ import Conversations from "./Conversations";
 import Message from "./Message";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import { VscSmiley } from "react-icons/vsc";
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+
 const socket = io.connect("http://localhost:3000");
 
 function Messenger() {
@@ -19,6 +23,18 @@ function Messenger() {
   const [message, setMessage] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [showEmoji,setShowEmoji] = useState(false)
+
+  //add emoji
+  const addEmoji = (e)=>{
+    const sym = e.unified.split("_");
+    //sym - we get  a uinified text in an array
+    const codeArray = []
+    //traverse through sym and push to codeArray
+    sym.forEach((el)=> codeArray.push("0x" + el))
+    let emoji = String.fromCodePoint(...codeArray);
+    setNewMessage(newMessage + emoji)
+  }
 
   //to make the chat component automatically scroll
   const scrollRef = useRef();
@@ -154,8 +170,7 @@ function Messenger() {
         senderId: currentUser._id,
         receiverId: ownerId,
       });
-      console.log(res.data,'🍉🍉🍉')
-      console.log(res.data._id,'🍉🍉🍉')
+      
       
       if (res) {
         setCurrentChat(res.data);
@@ -185,6 +200,7 @@ function Messenger() {
 
     try {
       const res = await axios.post("/api/message/newMessage/", messageTosend);
+      setShowEmoji(false)
       if (res) {
         setMessage([...message, res.data]);
       }
@@ -315,21 +331,30 @@ function Messenger() {
           </div> 
           {/**send message */}
 
-           <div className="flex gap-2 mt-3 justify-between">
+           <div className="flex gap-2 items-start mt-3 justify-between ">
+            <div className="flex w-full  bg-slate-200 items-center mr-3 relative">
+
             <textarea
               onChange={(e) => setNewMessage(e.target.value)}
               value={newMessage}
               id="text"
               cols="30"
-              className=" w-full rounded-lg h-12 p-3 focus:outline-none"
+              className=" w-full bg-transparent rounded-lg h-12 p-3 resize-none focus:outline-none"
               placeholder="Message"
               rows="10"
             ></textarea>
+
+            <span><VscSmiley onClick={()=> setShowEmoji(prev => !prev)} className="cursor-pointer hover:bg-slate-400 mr-2"/></span>
+          { showEmoji && <div className="absolute bottom-[100%] right-2">
+              <Picker data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={addEmoji} maxFrequentRows={0} className='text-slate-600 font-semibold'/>
+            </div>}
+            </div>
             <button
               type="button"
               className="p-3 bg-blue-700 rounded-lg text-white font-semibold mr-4 hover:bg-blue-500"
               onClick={handleSubmit}
             >
+
               send
             </button>
           </div> 

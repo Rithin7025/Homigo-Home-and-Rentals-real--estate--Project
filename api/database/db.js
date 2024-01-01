@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import 'dotenv/config'
-
+console.log(process.env.DATABASE_URL,'mongo db connection string')
 const connectDB = async() => {
     try {
         // console.log(process.env.DATABASE_URL,'here the connection from env')

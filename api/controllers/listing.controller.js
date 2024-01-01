@@ -322,13 +322,13 @@ export const paymentSuccessVerification = async(req,res) => {
         const buyerName = buyer.userName;
         const buyerEmail = buyer.email;
         console.log(buyer, 'just got the buyer')
-        res.json({
+        res.status(200).json({
             msg: "success",
             orderId: razorpayOrderId,
             paymentId: razorpayPaymentId,
         });
 
-
+        console.log('payment finished👏👏👏')
     } catch (error) {
       console.log(error)
         res.status(500).send(error)
@@ -347,7 +347,9 @@ export const getIsBookedDetails = async(req,res)=>{
 
 export const getToken = async(req,res) => {
    const userId = req.params.id;
+   console.log(userId,'here is user id for token 😊😊')
    if(!userId){
+   console.log('entered')
     return res.status(404).json({message : 'userId not found'})
    }
 
@@ -357,9 +359,9 @@ export const getToken = async(req,res) => {
     console.log(tokens)
     console.log('---------------------------------------- > toknen')
     if(!tokens || tokens.length === 0){
-
+       console.log('entered !tokns')
       return res.status(204).json({message : 'empty tokens'})
-
+     
     }
     return res.status(200).json(tokens)
    } catch (error) {

@@ -2,7 +2,7 @@ import React from 'react'
 
 function PaymentSuccessPage() {
   return (
-    <div>PaymentSuccessPage</div>
+    <div className='h-screen w-screen'>PaymentSuccessPage</div>
   )
 }
 

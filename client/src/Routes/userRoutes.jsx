@@ -11,7 +11,7 @@ import UpdateListingPage from '../pages/UserPages/UpdateListingPage';
 import ListingPage from '../pages/UserPages/ListingPage';
 import Search from '../pages/UserPages/Search';
 import Tokens from '../pages/UserPages/Tokens';
-
+import PaymentSuccessPage from '../pages/UserPages/PaymentSuccessPage';
 const userRoutes = (
 
     <Route path='/' element={<BaseLayout/>}>
@@ -19,6 +19,7 @@ const userRoutes = (
         <Route path='about' element={<About/>} />
         <Route path='listing/:listingId' element={<ListingPage/>} />
         <Route path='search' element={<Search/>} />
+        <Route path='paymentSuccessPage' element={<PaymentSuccessPage/>}/> 
         
         {/**Protecting the private route */}
         <Route element={<PrivateRoute/>}>   

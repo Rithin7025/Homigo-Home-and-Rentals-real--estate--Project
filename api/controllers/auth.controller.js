@@ -77,58 +77,58 @@ const sendverifyMail = async(name,email,userId) => {
 //  /========================================== gmail ==========================================================/ //
 
 
-  // const transporter =  nodemailer.createTransport({
-  //     host: "smtp.gmail.com",
-  //     port: 587,
-  //     secure: false,
-  //     auth: {
-  //       user: configEmail,
-  //       pass: configPassword,
-  //     },
-  //   })
+  const transporter =  nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: configEmail,
+        pass: configPassword,
+      },
+    })
 
 
-  // const mailOptions = {
-  //   from: configEmail,
-  //   to: email,
-  //   subject: "Email Verification",
-  //   html:`<p>Hi ${name}, <b>${Otp}</b> This is your Otp number to verify your email .</p>`,
-  // };
+  const mailOptions = {
+    from: configEmail,
+    to: email,
+    subject: "Email Verification",
+    html:`<p>Hi ${name}, <b>${Otp}</b> This is your Otp number to verify your email .</p>`,
+  };
 
 
-  // transporter.sendMail(mailOptions, (error, info) => {
-  //   if (error) {
-  //     return console.log(error.message);
-  //   }
-  //   console.log("success"); 
-  // });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error.message);
+    }
+    console.log("success"); 
+  });
 
+    console.log(Otp)
   //  /========================================== ethreal ==========================================================/ //
 
-  console.log(Otp)
 
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'jacey.nikolaus96@ethereal.email',
-        pass: 'D9SXz7p47raHGGFDeS'
-    }
-});
+//   const transporter = nodemailer.createTransport({
+//     host: 'smtp.ethereal.email',
+//     port: 587,
+//     auth: {
+//         user: 'jacey.nikolaus96@ethereal.email',
+//         pass: 'D9SXz7p47raHGGFDeS'
+//     }
+// });
 
- try{
-        const info = await transporter.sendMail({
-            from: 'jacey.nikolaus96@ethereal.email', // sender address
-            to: email,
-            subject: 'Email verification', // Subject line
-            html: `<p>Hi ${name}, <b>${Otp}</b> This is your Otp number to verify your email .</p>`, // plain text body
-          });
+//  try{
+//         const info = await transporter.sendMail({
+//             from: 'jacey.nikolaus96@ethereal.email', // sender address
+//             to: email,
+//             subject: 'Email verification', // Subject line
+//             html: `<p>Hi ${name}, <b>${Otp}</b> This is your Otp number to verify your email .</p>`, // plain text body
+//           });
         
-          console.log("Message sent: %s", info.messageId);
+//           console.log("Message sent: %s", info.messageId);
           
-    }catch(err){
-        throw new Error(err)
-    }
+//     }catch(err){
+//         throw new Error(err)
+//     }
 
 
 

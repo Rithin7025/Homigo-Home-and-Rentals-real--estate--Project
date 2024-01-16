@@ -57,7 +57,7 @@ export default function Header() {
             <Link to='/token'>
             <li className='hidden sm:inline text-slate-600 hover:underline cursor-pointer'>Tokens</li>
             </Link> : ''
-            }
+            } 
             <Link to='/'>
 
             <li className='hidden sm:inline text-slate-600 hover:underline cursor-pointer'>Home</li>

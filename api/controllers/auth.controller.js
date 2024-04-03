@@ -269,7 +269,7 @@ export const googleAuth = async(req,res) => {
     if(user.isBlocked){
       return res.status(403).json({errorType : 'User blocked'})
     }
-
+    
     if(user){
       //if the user exists we create a token 
       const token = jwt.sign({id : user._id},process.env.JWT_SECRET)

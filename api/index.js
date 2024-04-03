@@ -112,7 +112,7 @@ io.on('connection',(socket)=>{
 //cors setup to mail Express app
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "*",
     credentials: true,
   })
 );

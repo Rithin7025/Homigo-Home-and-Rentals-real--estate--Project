@@ -266,7 +266,7 @@ export const googleAuth = async(req,res) => {
     //if the user exist , authenticate him/her 
 
 
-    if(user.isBlocked){
+    if(user?.isBlocked){
       return res.status(403).json({errorType : 'User blocked'})
     }
     

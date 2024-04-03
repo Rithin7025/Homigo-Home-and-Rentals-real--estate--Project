@@ -9,7 +9,7 @@ import { VscSmiley } from "react-icons/vsc";
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 
-const socket = io.connect("https://homigo.online");
+const socket = io.connect("http://localhost:3000");
 
 function Messenger() {
   const { ownerId } = useParams();
